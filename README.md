@@ -1,8 +1,5 @@
 # Welcome to Stack Index
-
-
-## Project info
-
+We curate insights, compare tools, highlight trends, and help dev-facing companies authentically reach technical audiences.
 
 ## How can I edit this code?
 
