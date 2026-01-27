@@ -17,6 +17,8 @@ export const Hero = () => {
           A curated index of developer tools, stories, and insights from the people building the future of infrastructure.
         </p>
 
+
+
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Button 
             size="lg" 

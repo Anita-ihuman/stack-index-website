@@ -7,9 +7,16 @@ export const Footer = () => {
     <footer className="py-16 px-6 bg-card border-t border-border">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-8">
-          {/* Logo and Copyright */}
+          {/* Logo and short mission statement (mission placed below the logo) */}
           <div className="flex flex-col gap-4">
-            <Logo />
+            <div>
+              <Logo />
+            </div>
+
+            <p className="text-sm text-muted-foreground max-w-xs">
+              We help dev-facing companies tell authentic stories and reach technical audiences — and help developers find the ideal tools.
+            </p>
+
             <span className="text-sm text-muted-foreground">
               © Stack Index 2025
             </span>

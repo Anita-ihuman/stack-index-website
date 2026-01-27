@@ -4,29 +4,29 @@ import { Newspaper, Mic, Video, BookOpen } from "lucide-react";
 const services = [
   {
     icon: Newspaper,
-    title: "Newsletter & Articles",
+    title: "Technical Content & Editorial",
     description: "Weekly curated developer tools, news, and insights delivered to your inbox."
   },
   {
     icon: Mic,
-    title: "Podcast",
-    description: "Conversations with engineers, DevRel leaders, and open source maintainers."
+    title: "Multi-Channel Distribution",
+    description: "Bring your tool closer to developers, DevRel leaders, and open source maintainers."
   },
   {
     icon: Video,
-    title: "Video Content",
-    description: "Tool explainers, tutorials, and DevOps deep dives on YouTube."
+    title: "Market Intelligence & Discovery Platform",
+    description: "Source, compare, and validate your features against competitors."
   },
   {
     icon: BookOpen,
-    title: "Community Resources",
+    title: "Strategic DevRel & Community Advisory",
     description: "Curated guides, career picks, and developer ecosystem insights."
   }
 ];
 
 export const Services = () => {
   return (
-    <section className="py-24 bg-secondary/30">
+    <section id="services" className="py-24 bg-secondary/30">
       <div className="container">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4 text-foreground">

@@ -1,9 +1,26 @@
 import { Button } from "@/components/ui/button";
 import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Header = () => {
+  const navigate = useNavigate();
+
+  const goToSection = (id: string) => {
+    const scroll = () => {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    };
+
+    if (window.location.pathname !== "/") {
+      // navigate to home first, then scroll after a short delay
+      navigate("/");
+      setTimeout(scroll, 100);
+    } else {
+      scroll();
+    }
+  };
+
   const scrollToContact = () => {
     const contactSection = document.getElementById("contact");
     if (contactSection) {
@@ -19,18 +36,25 @@ export const Header = () => {
         </Link>
         
         <nav className="hidden md:flex items-center gap-8">
-          <Link 
-            to="/newsletter" 
+          <button
+            onClick={() => goToSection("newsletter")}
             className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
           >
-            Newsletter (coming soon)
-          </Link>
-          <Link 
-            to="/blog" 
+            Newsletter
+          </button>
+          <button
+            onClick={() => goToSection("services")}
             className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
           >
-            Blog (coming soon)
+            Services
+          </button>
+          <Link
+            to="/blog"
+            className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+          >
+            Blog
           </Link>
+          {/* AI Analyzer link removed from navigation to keep the feature hidden while retaining the route */}
         </nav>
 
         <div className="flex items-center gap-4">

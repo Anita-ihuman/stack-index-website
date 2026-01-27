@@ -1,5 +1,6 @@
-# Welcome to your Lovable project
-We curate insights, compare tools, highlight trends, and help dev-facing companies authentically reach technical audiences.
+# Welcome to Stack Index
+
+Stack Index is a developer-native technology media platform where engineers, DevOps teams, platform engineers, and DevRel leaders discover the tools, stories, and platforms shaping modern infrastructure
 
 **Use your preferred IDE**
 

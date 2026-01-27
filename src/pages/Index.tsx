@@ -4,6 +4,7 @@ import { Newsletter } from "@/components/Newsletter";
 import { Services } from "@/components/Services";
 import { Contact } from "@/components/Contact";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import SubstackEmbed from "@/components/SubstackEmbed";
 
 const pastIssues = [
   { issue: 1, title: "Coming Soon", date: "Coming Soon" },
@@ -31,43 +32,49 @@ const Index = () => {
           </p>
         </div>
       </section>
+      {/* Services Section */}
+      <Services />
 
-      {/* Newsletter Section - The Stack Digest */}
-      <section className="py-16 bg-secondary/30">
+  {/* Newsletter Section - The Stack Digest */}
+  <section className="py-12 bg-secondary/30">
         <div className="container">
           <div className="max-w-2xl mx-auto text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
               The Stack Digest
             </h2>
             <p className="text-lg text-muted-foreground">
-              A weekly curated drop of developer tools, news, and insights.
+              Join 5,000+ engineers, founders, and maintainers like you. Get detailed signals of emerging tools, niche research, and resources on open-source culture, cloud computing, platform engineering, DevOps tools, opportunities, and more.
             </p>
           </div>
-          
-          <Newsletter />
 
-          {/* Past Issues */}
-          <div className="max-w-4xl mx-auto mt-16">
-            <h3 className="text-2xl font-bold mb-8 text-foreground">Catch Up on Past Issues</h3>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {pastIssues.map((issue) => (
-                <Card key={issue.issue} className="hover:shadow-hover hover:border-primary/50 transition-all cursor-pointer bg-card">
-                  <CardHeader>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-mono text-accent">Issue #{issue.issue}</span>
-                      <span className="text-sm text-muted-foreground">{issue.date}</span>
-                    </div>
-                    <CardTitle className="text-xl text-foreground">{issue.title}</CardTitle>
-                  </CardHeader>
-                </Card>
-              ))}
+          <div className="grid lg:grid-cols-2 gap-8 items-stretch">
+            {/* Left: Past Issues */}
+            <div className="flex flex-col gap-4 h-full">
+              <h3 className="text-2xl font-semibold mb-4 text-foreground">Catch Up on Past Issues</h3>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 flex-1">
+                {pastIssues.map((issue) => (
+                  <Card key={issue.issue} className="hover:shadow-hover hover:border-primary/50 transition-all cursor-pointer bg-card h-full">
+                    <CardHeader>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-mono text-accent">Issue #{issue.issue}</span>
+                        <span className="text-sm text-muted-foreground">{issue.date}</span>
+                      </div>
+                      <CardTitle className="text-lg text-foreground">{issue.title}</CardTitle>
+                    </CardHeader>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* Right: Substack embed (subscribe widget) */}
+            <div className="flex items-center justify-center">
+              <div className="w-full h-full flex items-center">
+                <SubstackEmbed />
+              </div>
             </div>
           </div>
         </div>
       </section>
-
-      {/* Services Section */}
-      <Services />
 
       {/* Contact Section */}
       <Contact />

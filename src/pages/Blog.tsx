@@ -4,7 +4,9 @@ import { BlogCard } from "@/components/BlogCard";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getAllPosts } from "@/lib/posts";
+import { Link, useNavigate } from "react-router-dom";
 
 const blogPosts = [
   {
@@ -55,10 +57,21 @@ const tags = ["All", "#DevRel", "#PlatformEngineering", "#OpenSource", "#ToolRev
 
 const Blog = () => {
   const [selectedTag, setSelectedTag] = useState("All");
+  const [posts, setPosts] = useState<any[]>([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    getAllPosts().then((p) => {
+      // debug: log raw posts returned from loader
+      try { console.log('[blog] getAllPosts ->', p.map(x => ({ slug: x.meta.slug, title: x.meta.title }))); } catch (e) {}
+      const mapped = p.map((x) => ({ ...x.meta, description: x.meta.description || '', author: x.meta.author, date: x.meta.date }));
+      setPosts(mapped);
+    });
+  }, []);
 
   const filteredPosts = selectedTag === "All" 
-    ? blogPosts 
-    : blogPosts.filter(post => post.tag === selectedTag);
+    ? posts.length ? posts : blogPosts
+    : (posts.length ? posts : blogPosts).filter(post => post.tag === selectedTag);
 
   return (
     <div className="min-h-screen bg-gradient-hero">
@@ -97,9 +110,17 @@ const Blog = () => {
             {/* Blog Posts Grid */}
             <div className="lg:col-span-3">
               <div className="grid md:grid-cols-2 gap-6">
-                {filteredPosts.map((post, index) => (
-                  <BlogCard key={index} {...post} />
-                ))}
+                      {filteredPosts.map((post) => (
+                        post.slug ? (
+                          <Link key={post.slug} to={`/blog/${post.slug}`} className="block">
+                            <BlogCard {...post} />
+                          </Link>
+                        ) : (
+                          <div key={post.title}>
+                            <BlogCard {...post} />
+                          </div>
+                        )
+                      ))}
               </div>
             </div>
 
@@ -113,7 +134,10 @@ const Blog = () => {
                   <p className="text-muted-foreground mb-6 text-sm">
                     Share your insights, stories, and expertise with the developer community.
                   </p>
-                  <Button className="w-full bg-gradient-primary hover:shadow-hover transition-all">
+                  <Button 
+                    className="w-full bg-gradient-primary hover:shadow-hover transition-all"
+                    onClick={() => navigate('/create-post')}
+                  >
                     Submit Your Article →
                   </Button>
                 </CardContent>

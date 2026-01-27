@@ -12,7 +12,7 @@ export const Newsletter = () => {
   };
 
   return (
-    <section className="py-24 px-6 bg-background">
+  <section id="newsletter" className="py-24 px-6 bg-background">
       <div className="max-w-2xl mx-auto text-center">
         <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
           Stay Updated — Every Tuesday.
@@ -39,10 +39,10 @@ export const Newsletter = () => {
             Subscribe
           </Button>
         </form>
-
         <p className="text-sm text-muted-foreground">
           No spam. Just dev tools, culture, and updates.
         </p>
+
       </div>
     </section>
   );
