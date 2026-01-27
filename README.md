@@ -2,7 +2,16 @@
 
 Stack Index is a developer-native technology media platform where engineers, DevOps teams, platform engineers, and DevRel leaders discover the tools, stories, and platforms shaping modern infrastructure
 
-**Use your preferred IDE**
+### What We Do
+
+We bridge the gap between official documentation and real-world implementation through four core pillars:
+
+1. **AI-Verified Discovery:** We don't just list tools. Using the Model Context Protocol (MCP), our analyzer pulls directly from verified project documentation to provide 100% accurate feature breakdowns and side-by-side comparisons.
+2. **Platform Diaries & Stories:** We move beyond the "Hello World" tutorials. We host authentic stories from builders and DevRel leaders who share the "scars" of their implementation—what worked, what broke, and why.
+3. **Technical Benchmarking:** We provide a neutral ground to spot industry trends and compare technologies based on performance, community sentiment, and developer experience (DX) ratings.
+4. **Fractional DevRel Expertise:** We offer high-level developer relations strategy for organizations looking to scale their tool’s adoption without the overhead of a full-time department.
+
+<!-- **Use your preferred IDE**
 
 If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
 
@@ -46,5 +55,5 @@ This project is built with:
 - TypeScript
 - React
 - shadcn-ui
-- Tailwind CSS
+- Tailwind CSS -->
 
