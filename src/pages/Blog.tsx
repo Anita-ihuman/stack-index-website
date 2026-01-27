@@ -8,52 +8,19 @@ import { useState, useEffect } from "react";
 import { getAllPosts } from "@/lib/posts";
 import { Link, useNavigate } from "react-router-dom";
 
+// Fallback single published article (used only if markdown posts are not discovered)
 const blogPosts = [
   {
-    title: "Coming Soon",
-    description: "Exciting content is on the way. Stay tuned for insights from developer communities.",
+    slug: "top-5-mistakes-every-beginner-devrel",
+    title: "Top 5 Mistakes Every Beginner DevRel",
+    description: "Practical lessons and common pitfalls we repeatedly see when teams start developer relations work.",
     tag: "#DevRel",
     author: "Stack Index Team",
-    date: "Coming Soon"
-  },
-  {
-    title: "Coming Soon",
-    description: "Exciting content is on the way. Stay tuned for platform engineering insights.",
-    tag: "#PlatformEngineering",
-    author: "Stack Index Team",
-    date: "Coming Soon"
-  },
-  {
-    title: "Coming Soon",
-    description: "Exciting content is on the way. Stay tuned for open source insights.",
-    tag: "#OpenSource",
-    author: "Stack Index Team",
-    date: "Coming Soon"
-  },
-  {
-    title: "Coming Soon",
-    description: "Exciting content is on the way. Stay tuned for developer tools insights.",
-    tag: "#ToolReview",
-    author: "Stack Index Team",
-    date: "Coming Soon"
-  },
-  {
-    title: "Coming Soon",
-    description: "Exciting content is on the way. Stay tuned for AI and machine learning insights.",
-    tag: "#AI",
-    author: "Stack Index Team",
-    date: "Coming Soon"
-  },
-  {
-    title: "Coming Soon",
-    description: "Exciting content is on the way. Stay tuned for DevOps best practices.",
-    tag: "#DevOps",
-    author: "Stack Index Team",
-    date: "Coming Soon"
-  },
+    date: "Jan 20, 2026"
+  }
 ];
 
-const tags = ["All", "#DevRel", "#PlatformEngineering", "#OpenSource", "#ToolReview", "#AI", "#DevOps"];
+const tags = ["All", "#DevRel"];
 
 const Blog = () => {
   const [selectedTag, setSelectedTag] = useState("All");

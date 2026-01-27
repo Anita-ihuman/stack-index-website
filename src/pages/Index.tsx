@@ -2,6 +2,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Newsletter } from "@/components/Newsletter";
 import { Services } from "@/components/Services";
+import { About } from "@/components/About";
 import { Contact } from "@/components/Contact";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import SubstackEmbed from "@/components/SubstackEmbed";
@@ -35,8 +36,11 @@ const Index = () => {
       {/* Services Section */}
       <Services />
 
+  {/* About Section */}
+  <About />
+
   {/* Newsletter Section - The Stack Digest */}
-  <section className="py-12 bg-secondary/30">
+  <section id="newsletter" className="py-12 bg-secondary/30">
         <div className="container">
           <div className="max-w-2xl mx-auto text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">

@@ -7,17 +7,25 @@ export const Header = () => {
   const navigate = useNavigate();
 
   const goToSection = (id: string) => {
-    const scroll = () => {
+    // Robust scrolling: try to find the element repeatedly after navigation
+    const tryScroll = (attempt = 0) => {
       const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: "smooth" });
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+        return true;
+      }
+      if (attempt > 20) return false; // give up after ~2s
+      setTimeout(() => tryScroll(attempt + 1), 100);
+      return false;
     };
 
     if (window.location.pathname !== "/") {
-      // navigate to home first, then scroll after a short delay
+      // navigate to home first, then start trying to scroll
       navigate("/");
-      setTimeout(scroll, 100);
+      // start polling shortly after navigation so we catch the element when it's mounted
+      setTimeout(() => tryScroll(0), 120);
     } else {
-      scroll();
+      tryScroll(0);
     }
   };
 
@@ -37,22 +45,31 @@ export const Header = () => {
         
         <nav className="hidden md:flex items-center gap-8">
           <button
-            onClick={() => goToSection("newsletter")}
+            onClick={() => goToSection("about")}
             className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
           >
-            Newsletter
+            About
           </button>
+
           <button
             onClick={() => goToSection("services")}
             className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
           >
             Services
           </button>
+
+          <button
+            onClick={() => goToSection("newsletter")}
+            className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+          >
+            Newsletter
+          </button>
+
           <Link
             to="/blog"
             className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
           >
-            Blog
+            Blogs
           </Link>
           {/* AI Analyzer link removed from navigation to keep the feature hidden while retaining the route */}
         </nav>
