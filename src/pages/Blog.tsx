@@ -8,19 +8,11 @@ import { useState, useEffect } from "react";
 import { getAllPosts } from "@/lib/posts";
 import { Link, useNavigate } from "react-router-dom";
 
-// Fallback single published article (used only if markdown posts are not discovered)
 const blogPosts = [
-  {
-    slug: "top-5-mistakes-every-beginner-devrel",
-    title: "Top 5 Mistakes Every Beginner DevRel",
-    description: "Practical lessons and common pitfalls we repeatedly see when teams start developer relations work.",
-    tag: "#DevRel",
-    author: "Stack Index Team",
-    date: "Jan 20, 2026"
-  }
+
 ];
 
-const tags = ["All", "#DevRel"];
+const tags = ["All", "#DevRel", "#PlatformEngineering", "#OpenSource", "#ToolReview", "#AI", "#DevOps"];
 
 const Blog = () => {
   const [selectedTag, setSelectedTag] = useState("All");

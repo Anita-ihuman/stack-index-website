@@ -42,6 +42,7 @@ Without some level of understanding of the project or desired field, you are bou
 - Provide solutions to the bugs users may be having
 - Explain why a system behaved a certain way
 - Reference architectural constraints, not just marketing promises
+  
 Take, for instance, you are making documentation updates. Adding hands-on debugging steps will reduce repeated community questions and free both maintainers and DevRel from reactive support, compared to documentation without one.
 It is critical that you have an in-depth understanding of the architectural decisions, know the trade-offs, and be able to help teams get from Point A to Point Z, reason with them, and educate both developers and users.
 
@@ -57,6 +58,7 @@ That trust can become credibility in technical sales cycles. In most startups Iâ
 - Community advocacy
 - Trust built through consistent engagement
 - OSS contributors advocating internally at their companies
+
 In practical terms, this translates to shorter sales cycles, warmer enterprise conversations, and even faster community growth with no proportional increase in marketing spend for your team. That's why the community will always be your biggest advocates, and your internal team members can be your greatest allies. This is especially true in developer ecosystems.
 ![DevRel Illustration](/posts/top-5-mistakes-every-beginner-devrel/Networking.png)
 

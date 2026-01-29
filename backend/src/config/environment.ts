@@ -19,6 +19,13 @@ const envSchema = z.object({
   REDDIT_CLIENT_ID: z.string().optional(),
   REDDIT_CLIENT_SECRET: z.string().optional(),
 
+  // Email (contact form) configuration
+  CONTACT_RECIPIENT: z.string().default('thestackindex@gmail.com'),
+  SMTP_HOST: z.string().optional(),
+  SMTP_PORT: z.string().optional(),
+  SMTP_USER: z.string().optional(),
+  SMTP_PASS: z.string().optional(),
+
   // Cache configuration
   REDIS_URL: z.string().default('redis://localhost:6379'),
   REDIS_PASSWORD: z.string().optional(),
