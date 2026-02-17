@@ -45,7 +45,7 @@ const Index = () => {
         <div className="container">
           <div className="max-w-2xl mx-auto text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
-              The Stack Digest
+              The Stack Index Newsletter
             </h2>
             <p className="text-lg text-muted-foreground">
               Join 100+ engineers, founders, and maintainers like you. Get detailed signals of emerging tools, niche research, and resources on open-source culture, cloud computing, platform engineering, DevOps tools, opportunities, and more.
