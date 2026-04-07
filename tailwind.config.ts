@@ -48,10 +48,16 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        /* Raw brand hex values */
+        'brand-blue':     '#007BFF',
+        'brand-green':    '#00FF95',
+        'brand-purple':   '#534AB7',
+        'brand-charcoal': '#0D1117',
+        'brand-white':    '#F5F7FA',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['IBM Plex Mono', 'monospace'],
+        sans: ['Syne', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
       },
       backgroundImage: {
         'gradient-hero': 'var(--gradient-hero)',

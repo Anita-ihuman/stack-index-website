@@ -11,7 +11,7 @@ interface BlogCardProps {
 
 export const BlogCard = ({ title, description, tag, author, date }: BlogCardProps) => {
   return (
-    <Card className="group hover:shadow-hover transition-all duration-300 cursor-pointer bg-gradient-card border-border">
+    <Card className="group hover:border-primary/60 transition-colors cursor-pointer bg-card border-border/60">
       <CardHeader>
         <div className="flex items-center gap-2 mb-2">
           <Badge variant="secondary" className="text-xs font-mono">

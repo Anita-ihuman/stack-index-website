@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "registrations": {
+    "prisma": {
+      "toolSlug": "prisma",
+      "mcpServerUrl": "https://mcp.prisma.io",
+      "orgName": "Prisma",
+      "orgWebsite": "https://prisma.io",
+      "verifiedAt": "2025-01-01T00:00:00Z",
+      "transportType": "http",
+      "apiVersion": "2024-11-05"
+    }
+  }
+}

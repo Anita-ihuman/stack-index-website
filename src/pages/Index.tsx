@@ -19,16 +19,19 @@ const pastIssues = [
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gradient-hero">
+    <div className="min-h-screen bg-background">
       <Header />
       
       {/* Hero Section */}
       <section className="container py-24">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground">
-            Your Source for Developer Tools, Stories, and Insights.
+            Your Source for{" "}
+            <span className="text-primary">Developer Tools</span>,
+            Stories, and{" "}
+            <span className="text-accent">Insights</span>.
           </h1>
-          
+
           <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto">
             Discover the tools, platforms, and people shaping modern infrastructure, DevOps, and open source.
           </p>
@@ -45,7 +48,7 @@ const Index = () => {
         <div className="container">
           <div className="max-w-2xl mx-auto text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
-              The Stack Index Newsletter
+              The <span className="text-primary">Stack Index</span> Newsletter
             </h2>
             <p className="text-lg text-muted-foreground">
               Join 100+ engineers, founders, and maintainers like you. Get detailed signals of emerging tools, niche research, and resources on open-source culture, cloud computing, platform engineering, DevOps tools, opportunities, and more.

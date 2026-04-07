@@ -70,6 +70,8 @@ export interface AnalysisMetadata {
     github: boolean;
     documentation: boolean;
     community: boolean;
+    /** True when at least one tool used an MCP server for docs */
+    mcp: boolean;
   };
   fetchedAt: string;
   tokensUsed: number;
@@ -78,6 +80,10 @@ export interface AnalysisMetadata {
     docs?: string;
     community?: string;
   };
+  /** Tool slugs whose docs were fetched from a verified MCP server */
+  mcpVerifiedTools?: string[];
+  /** Tools that had MCP registered but fetch failed and fell back to scraping */
+  mcpFallbackTools?: string[];
 }
 
 /**
@@ -102,6 +108,44 @@ export interface HealthResponse {
   environment: string;
   timestamp: string;
 }
+
+/**
+ * Catalog + Search API functions
+ */
+import type { ToolCatalogEntry, ToolScore, SearchResponse, ToolCategory } from '@/types/catalog';
+
+export const catalogApi = {
+  async listTools(params?: { category?: ToolCategory }): Promise<{ tools: ToolCatalogEntry[]; count: number }> {
+    const url = params?.category ? `/tools?category=${params.category}` : '/tools';
+    const res = await apiClient.get<{ tools: ToolCatalogEntry[]; count: number }>(url);
+    return res.data;
+  },
+
+  async listCategories(): Promise<{ categories: Array<{ category: ToolCategory; count: number; tools: string[] }> }> {
+    const res = await apiClient.get<{ categories: Array<{ category: ToolCategory; count: number; tools: string[] }> }>('/tools/categories');
+    return res.data;
+  },
+
+  async getTool(slug: string, withScore = false): Promise<{ tool: ToolCatalogEntry; score?: ToolScore }> {
+    const url = withScore ? `/tools/${slug}?score=true` : `/tools/${slug}`;
+    const res = await apiClient.get<{ tool: ToolCatalogEntry; score?: ToolScore }>(url);
+    return res.data;
+  },
+
+  async getToolScore(slug: string): Promise<{ slug: string; score: ToolScore }> {
+    const res = await apiClient.get<{ slug: string; score: ToolScore }>(`/tools/${slug}/score`);
+    return res.data;
+  },
+
+  async search(query: string, options?: { limit?: number; category?: ToolCategory }): Promise<SearchResponse> {
+    const res = await apiClient.post<SearchResponse>('/search', {
+      query,
+      limit: options?.limit ?? 5,
+      category: options?.category,
+    });
+    return res.data;
+  },
+};
 
 /**
  * Analysis API functions

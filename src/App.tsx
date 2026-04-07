@@ -4,11 +4,14 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
-import Newsletter from "./pages/Newsletter";
 import Blog from "./pages/Blog";
 import CreatePost from "./pages/CreatePost";
 import Post from "./pages/Post";
 import Analyze from "./pages/Analyze";
+import Tools from "./pages/Tools";
+import ToolDetail from "./pages/ToolDetail";
+import Roadmap from "./pages/Roadmap";
+import Events from "./pages/Events";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,12 +23,14 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/newsletter" element={<Newsletter />} />
-          <Route path="/blog" element={<Blog />} />
+          <Route path="/" element={<Index />} />          <Route path="/blog" element={<Blog />} />
           <Route path="/create-post" element={<CreatePost />} />
           <Route path="/blog/:slug" element={<Post />} />
           <Route path="/analyze" element={<Analyze />} />
+          <Route path="/tools" element={<Tools />} />
+          <Route path="/tools/:slug" element={<ToolDetail />} />
+          <Route path="/roadmap" element={<Roadmap />} />
+          <Route path="/events" element={<Events />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

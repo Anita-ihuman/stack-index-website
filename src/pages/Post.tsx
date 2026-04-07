@@ -81,7 +81,7 @@ const Post = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-hero">
+    <div className="min-h-screen bg-background">
       <Header />
       <main className="container py-16">
         <div className="max-w-3xl mx-auto">

@@ -16,7 +16,6 @@ export const Contact = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Contact form submission logic would go here
     console.log("Contact form submitted:", formData);
     toast({
       title: "Message sent!",
@@ -33,13 +32,17 @@ export const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-24 bg-background">
+    <section id="contact" className="py-24 bg-background border-t border-primary/20">
       <div className="container">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4 text-foreground">Get In Touch</h2>
+            <h2 className="text-4xl font-bold mb-4 text-foreground">
+              Get{" "}
+              <span className="text-primary">In Touch</span>
+            </h2>
             <p className="text-lg text-muted-foreground">
-              We'd love to hear about collaboration opportunities, content submissions, or general inquiries.
+              We'd love to hear about collaboration opportunities, content submissions, or
+              general inquiries.
             </p>
           </div>
 
@@ -99,10 +102,10 @@ export const Contact = () => {
               />
             </div>
 
-            <Button 
-              type="submit" 
-              size="lg" 
-              className="w-full bg-gradient-primary hover:shadow-glow transition-all"
+            <Button
+              type="submit"
+              size="lg"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground transition-colors"
             >
               Send Message
             </Button>

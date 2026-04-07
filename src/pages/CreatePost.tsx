@@ -47,7 +47,7 @@ const CreatePost = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-hero">
+    <div className="min-h-screen bg-background">
       <Header />
 
       <main className="container py-16">
@@ -79,7 +79,7 @@ const CreatePost = () => {
               />
 
               <div className="flex gap-3 mt-4">
-                <Button onClick={downloadMarkdown} className="bg-gradient-primary">Export Markdown</Button>
+                <Button onClick={downloadMarkdown} className="bg-primary">Export Markdown</Button>
                 <Button
                   onClick={() => {
                     navigator.clipboard?.writeText(`# ${title}\n\n${markdown}`);

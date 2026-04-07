@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 const Contact = () => {
   return (
-    <div className="min-h-screen bg-gradient-hero">
+    <div className="min-h-screen bg-background">
       <Header />
       
       <main className="container py-16">
@@ -37,7 +37,7 @@ const Contact = () => {
                 className="bg-background border-border"
               />
             </div>
-            <Button size="lg" className="w-full bg-gradient-primary hover:shadow-hover transition-all">
+            <Button size="lg" className="w-full bg-primary hover:shadow-hover transition-all">
               Send Message
             </Button>
           </form>

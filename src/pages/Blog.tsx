@@ -33,14 +33,16 @@ const Blog = () => {
     : (posts.length ? posts : blogPosts).filter(post => post.tag === selectedTag);
 
   return (
-    <div className="min-h-screen bg-gradient-hero">
+    <div className="min-h-screen bg-background">
       <Header />
       
       <main className="container py-16">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-5xl font-bold mb-4 text-foreground">
-              Insights, Stories, and Tools Developers Love
+              Insights, Stories, and{" "}
+              <span className="text-primary">Tools</span>{" "}
+              Developers <span className="text-accent">Love</span>
             </h1>
             <p className="text-xl text-muted-foreground">
               Deep dives into the tools, platforms, and people shaping modern development.
@@ -85,7 +87,7 @@ const Blog = () => {
 
             {/* Sidebar */}
             <div className="lg:col-span-1">
-              <Card className="bg-gradient-card border-border sticky top-24">
+              <Card className="bg-card border-border sticky top-24">
                 <CardContent className="p-6">
                   <h3 className="text-xl font-bold mb-4 text-foreground">
                     Want to write for Stack Index?
@@ -93,8 +95,8 @@ const Blog = () => {
                   <p className="text-muted-foreground mb-6 text-sm">
                     Share your insights, stories, and expertise with the developer community.
                   </p>
-                  <Button 
-                    className="w-full bg-gradient-primary hover:shadow-hover transition-all"
+                  <Button
+                    className="w-full bg-primary hover:bg-primary/90 transition-colors"
                     onClick={() => navigate('/create-post')}
                   >
                     Submit Your Article →

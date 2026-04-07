@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Search, Zap, Database, FileText, Users, Clock } from 'lucide-react';
+import { Loader2, Search, Zap, Database, FileText, Users, Clock, ShieldCheck, ShieldAlert } from 'lucide-react';
 import { AnalysisMetadata } from '@/lib/apiClient';
 
 export function AIAnalysisContainer() {
@@ -149,7 +149,7 @@ export function AIAnalysisContainer() {
               <p className="text-lg font-semibold text-muted-foreground">
                 Analyzing your request with real-time data...
               </p>
-              <div className="flex gap-2 text-sm text-muted-foreground">
+              <div className="flex gap-2 text-sm text-muted-foreground flex-wrap justify-center">
                 <Badge variant="outline" className="flex items-center gap-1">
                   <Database className="w-3 h-3" />
                   GitHub
@@ -162,9 +162,16 @@ export function AIAnalysisContainer() {
                   <Users className="w-3 h-3" />
                   Community
                 </Badge>
+                <Badge
+                  variant="outline"
+                  className="flex items-center gap-1 border-emerald-500/40 text-emerald-500"
+                >
+                  <ShieldCheck className="w-3 h-3" />
+                  MCP Servers
+                </Badge>
               </div>
               <p className="text-xs text-muted-foreground">
-                Fetching metrics, docs, and community data...
+                Fetching metrics, docs, community data, and verified MCP sources...
               </p>
             </div>
           </CardContent>
@@ -188,7 +195,7 @@ export function AIAnalysisContainer() {
                   </span>
                 )}
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <Badge variant={metadata.sources.github ? 'default' : 'outline'} className="text-xs">
                   <Database className="w-3 h-3 mr-1" />
                   GitHub
@@ -201,6 +208,28 @@ export function AIAnalysisContainer() {
                   <Users className="w-3 h-3 mr-1" />
                   Community
                 </Badge>
+                {metadata.sources.mcp && (
+                  <Badge
+                    variant="outline"
+                    className="text-xs border-emerald-500/60 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                  >
+                    <ShieldCheck className="w-3 h-3 mr-1" />
+                    MCP Verified
+                    {metadata.mcpVerifiedTools?.length
+                      ? ` (${metadata.mcpVerifiedTools.join(', ')})`
+                      : ''}
+                  </Badge>
+                )}
+                {metadata.mcpFallbackTools?.length ? (
+                  <Badge
+                    variant="outline"
+                    className="text-xs border-amber-500/60 bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                    title={`MCP server unreachable for: ${metadata.mcpFallbackTools.join(', ')}. Used scraped docs instead.`}
+                  >
+                    <ShieldAlert className="w-3 h-3 mr-1" />
+                    MCP Unavailable ({metadata.mcpFallbackTools.join(', ')})
+                  </Badge>
+                ) : null}
               </div>
             </div>
           </CardContent>

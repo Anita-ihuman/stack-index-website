@@ -1,19 +1,30 @@
 import axios, { AxiosInstance } from 'axios';
 import { env } from '../config/environment';
-import { ComparisonAnalysis, DeepDiveAnalysis } from '../types/analysis.types';
+import { ComparisonAnalysis, DeepDiveAnalysis, EnhancedComparisonAnalysis } from '../types/analysis.types';
 import { GitHubData } from '../types/github.types';
 import { DocumentationData } from './documentation.service';
 import { CommunityData } from './community.service';
+import { ToolScore } from '../types/catalog.types';
 import { ExternalAPIError } from '../utils/errorHandler';
 
 /**
- * Aggregated tool data for Claude
+ * Aggregated tool data for Claude.
+ * mcpVerified=true means docs came from a registered MCP server —
+ * Claude must prioritize this over its training data.
  */
 export interface AggregatedToolData {
   tool: string;
   github?: GitHubData;
   docs?: DocumentationData;
   community?: CommunityData;
+  /** True when docs were sourced from the org's MCP server */
+  mcpVerified?: boolean;
+  /** Org name displayed in the Verified badge */
+  mcpOrgName?: string;
+  /** MCP server URL for provenance metadata */
+  mcpServerUrl?: string;
+  /** True when an MCP server was registered but the fetch failed (fell back to scraping) */
+  mcpFallback?: boolean;
 }
 
 /**
@@ -42,7 +53,7 @@ export class ClaudeService {
 
     try {
       const response = await this.client.post('/messages', {
-        model: 'claude-3-sonnet-20240229',
+        model: 'claude-sonnet-4-6',
         max_tokens: 4096,
         system: prompt.system,
         messages: [
@@ -56,7 +67,7 @@ export class ClaudeService {
       const content = response.data.content[0].text;
       const analysis = JSON.parse(content) as ComparisonAnalysis;
 
-      // Enrich with real-time data
+      // Enrich with real-time data + MCP verification badge
       analysis.tools = analysis.tools.map((tool, index) => {
         const data = toolsData[index];
         return {
@@ -77,6 +88,14 @@ export class ClaudeService {
             : undefined,
           documentationUrl: data.docs?.url,
           lastUpdated: new Date().toISOString(),
+          verificationBadge: data.mcpVerified && data.mcpOrgName && data.mcpServerUrl
+            ? {
+                verified: true as const,
+                orgName: data.mcpOrgName,
+                mcpServerUrl: data.mcpServerUrl,
+                fetchedAt: new Date().toISOString(),
+              }
+            : undefined,
         };
       });
 
@@ -95,6 +114,172 @@ export class ClaudeService {
   }
 
   /**
+   * Enhanced comparison with scoring table, decision guidance, and risk analysis
+   */
+  async analyzeComparisonEnhanced(
+    toolsData: AggregatedToolData[],
+    scores: Array<ToolScore | null>
+  ): Promise<EnhancedComparisonAnalysis> {
+    const prompt = this.generateEnhancedComparisonPrompt(toolsData, scores);
+
+    try {
+      const response = await this.client.post('/messages', {
+        model: 'claude-sonnet-4-6',
+        max_tokens: 6144,
+        system: prompt.system,
+        messages: [{ role: 'user', content: prompt.user }],
+      });
+
+      const content = response.data.content[0].text;
+      const analysis = JSON.parse(content) as EnhancedComparisonAnalysis;
+
+      // Enrich with real-time data (same as base comparison)
+      analysis.tools = analysis.tools.map((tool, index) => {
+        const data = toolsData[index];
+        if (!data) return tool;
+        return {
+          ...tool,
+          githubUrl: data.github?.repository.url,
+          githubRepo: data.github?.repository.fullName,
+          metrics: data.github
+            ? {
+                stars: data.github.repository.stars,
+                forks: data.github.repository.forks,
+                downloads: data.community?.npm
+                  ? `${this.formatNumber(data.community.npm.downloads.lastMonth)}/month`
+                  : undefined,
+                recentActivity: data.github.activity.recentCommits
+                  ? `${data.github.activity.recentCommits} commits (30 days)`
+                  : undefined,
+              }
+            : undefined,
+          documentationUrl: data.docs?.url,
+          lastUpdated: new Date().toISOString(),
+          verificationBadge:
+            data.mcpVerified && data.mcpOrgName && data.mcpServerUrl
+              ? {
+                  verified: true as const,
+                  orgName: data.mcpOrgName,
+                  mcpServerUrl: data.mcpServerUrl,
+                  fetchedAt: new Date().toISOString(),
+                }
+              : undefined,
+        };
+      });
+
+      return analysis;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const errorDetail = error.response?.data?.error
+          ? JSON.stringify(error.response.data.error)
+          : error.message;
+        console.error('[Claude] Enhanced comparison error:', errorDetail);
+        throw new ExternalAPIError('Claude', errorDetail);
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * Generate enhanced comparison prompt with scoring context
+   */
+  private generateEnhancedComparisonPrompt(
+    toolsData: AggregatedToolData[],
+    scores: Array<ToolScore | null>
+  ): { system: string; user: string } {
+    const hasMCPData = toolsData.some((d) => d.mcpVerified);
+
+    const system = `You are a technical analyst for StackIndex with access to REAL-TIME DATA from GitHub, official documentation, and community platforms.
+${hasMCPData ? `\nIMPORTANT — MCP VERIFIED DOCUMENTATION: Some tools have documentation fetched directly from the organization's official MCP server. Treat MCP-verified content as authoritative.\n` : ''}
+Your task is to provide data-driven analysis with enhanced scoring, decision guidance, and risk analysis.
+CRITICAL: You must respond with ONLY valid JSON. No markdown, no code blocks, no additional text.`;
+
+    const toolsContext = toolsData.map((data, i) => {
+      const score = scores[i];
+      let ctx = this.formatToolContext(data);
+      if (score && score.overall > 0) {
+        ctx += `\n### Pre-Computed Score (use as context, not replacement for your analysis)\n`;
+        ctx += `- Overall: ${score.overall}/100\n`;
+        ctx += `- GitHub Stars: ${score.dimensions.githubStars.normalized}/100\n`;
+        ctx += `- Contributor Velocity: ${score.dimensions.contributorVelocity.normalized}/100\n`;
+        ctx += `- Community Activity: ${score.dimensions.communityActivity.normalized}/100\n`;
+        ctx += `- Maintenance Health: ${score.dimensions.maintenanceHealth.normalized}/100\n`;
+        ctx += `- Data Confidence: ${score.dataConfidence}\n`;
+      }
+      return ctx;
+    }).join('\n\n---\n\n');
+
+    const toolNames = toolsData.map((d) => d.tool).join(' vs ');
+
+    const user = `Compare: ${toolNames}
+
+REAL-TIME DATA:
+${toolsContext}
+
+Provide comprehensive comparison with enhanced decision guidance and risk analysis.
+
+Respond with ONLY valid JSON matching this structure:
+{
+  "tools": [
+    {
+      "name": "Tool Name",
+      "technicalSummary": "Brief technical overview",
+      "useCases": ["Use case 1"],
+      "strengths": ["Strength 1"],
+      "communityRating": 4.5,
+      "topProsCons": { "pros": ["Pro 1"], "cons": ["Con 1"] },
+      "architecturalInsights": "Architecture details",
+      "gotchas": ["Gotcha 1"]
+    }
+  ],
+  "comparisonSummary": "Overall comparison summary",
+  "recommendation": "When to use each tool",
+  "scoringTable": {
+    "tools": [
+      {
+        "name": "Tool Name",
+        "slug": "tool-slug",
+        "dimensions": {
+          "Performance": { "score": 85, "confidence": "live_data" },
+          "Ecosystem": { "score": 90, "confidence": "ai_inferred" },
+          "Operational Complexity": { "score": 70, "confidence": "ai_inferred" },
+          "Enterprise Readiness": { "score": 80, "confidence": "ai_inferred" },
+          "Learning Curve": { "score": 75, "confidence": "ai_inferred" }
+        },
+        "totalScore": 80
+      }
+    ]
+  },
+  "decisionGuidance": {
+    "choices": [
+      {
+        "toolName": "Tool Name",
+        "chooseIf": ["Scenario where this tool excels"],
+        "avoidIf": ["Scenario where this tool falls short"]
+      }
+    ],
+    "migrationComplexity": "medium",
+    "migrationNotes": "Notes on migrating between these tools"
+  },
+  "riskAnalysis": {
+    "risks": [
+      {
+        "toolName": "Tool Name",
+        "vendorLockIn": "low",
+        "communityRisk": "low",
+        "operationalRisk": "medium",
+        "maturityRisk": "low",
+        "notes": "Risk context"
+      }
+    ]
+  },
+  "confidenceScore": 82
+}`;
+
+    return { system, user };
+  }
+
+  /**
    * Deep-dive analysis of a single tool
    */
   async analyzeDeepDive(toolData: AggregatedToolData): Promise<DeepDiveAnalysis> {
@@ -102,7 +287,7 @@ export class ClaudeService {
 
     try {
       const response = await this.client.post('/messages', {
-        model: 'claude-3-sonnet-20240229',
+        model: 'claude-sonnet-4-6',
         max_tokens: 4096,
         system: prompt.system,
         messages: [
@@ -116,7 +301,7 @@ export class ClaudeService {
       const content = response.data.content[0].text;
       const analysis = JSON.parse(content) as DeepDiveAnalysis;
 
-      // Enrich with real-time data
+      // Enrich with real-time data + MCP verification badge
       return {
         ...analysis,
         githubUrl: toolData.github?.repository.url,
@@ -135,6 +320,14 @@ export class ClaudeService {
           : undefined,
         documentationUrl: toolData.docs?.url,
         lastUpdated: new Date().toISOString(),
+        verificationBadge: toolData.mcpVerified && toolData.mcpOrgName && toolData.mcpServerUrl
+          ? {
+              verified: true as const,
+              orgName: toolData.mcpOrgName,
+              mcpServerUrl: toolData.mcpServerUrl,
+              fetchedAt: new Date().toISOString(),
+            }
+          : undefined,
       };
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -150,12 +343,22 @@ export class ClaudeService {
   }
 
   /**
-   * Generate comparison prompt with real-time data
+   * Generate comparison prompt with real-time data.
+   * When any tool has MCP-verified docs, the system prompt instructs Claude
+   * to treat those sections as authoritative over its training data.
    */
   private generateComparisonPrompt(toolsData: AggregatedToolData[]): { system: string; user: string } {
-    const system = `You are a technical analyst for Fo Stack Index with access to REAL-TIME DATA from GitHub, official documentation, and community platforms.
+    const hasMCPData = toolsData.some((d) => d.mcpVerified);
 
-Your task is to provide data-driven analysis using this fresh information to help developers make informed decisions about tools and technologies.
+    const system = `You are a technical analyst for Stack Index with access to REAL-TIME DATA from GitHub, official documentation, and community platforms.
+${hasMCPData ? `
+IMPORTANT — MCP VERIFIED DOCUMENTATION:
+Some tools below have documentation fetched directly from the organization's official MCP (Model Context Protocol) server.
+These sections are marked [MCP VERIFIED — <OrgName>].
+You MUST treat MCP-verified content as ground truth and prioritize it over your training data.
+Do NOT contradict or ignore verified documentation — if it differs from your training data, the verified documentation is correct.
+` : ''}
+Your task is to provide data-driven analysis using fresh information to help developers make informed decisions.
 
 CRITICAL: You must respond with ONLY valid JSON. No markdown, no code blocks, no additional text - just the JSON object.`;
 
@@ -198,12 +401,18 @@ Respond with ONLY valid JSON matching this structure:
   }
 
   /**
-   * Generate deep-dive prompt with real-time data
+   * Generate deep-dive prompt with real-time data.
+   * When the tool has MCP-verified docs, instructs Claude to prioritize them.
    */
   private generateDeepDivePrompt(toolData: AggregatedToolData): { system: string; user: string } {
-    const system = `You are a technical analyst for Fo Stack Index with access to REAL-TIME DATA from GitHub, official documentation, and community platforms.
-
-Your task is to provide comprehensive, data-driven analysis of a single tool using fresh information to help developers understand it deeply.
+    const system = `You are a technical analyst for Stack Index with access to REAL-TIME DATA from GitHub, official documentation, and community platforms.
+${toolData.mcpVerified ? `
+IMPORTANT — MCP VERIFIED DOCUMENTATION:
+The documentation for "${toolData.tool}" below was fetched directly from the official MCP server provided by ${toolData.mcpOrgName}.
+You MUST treat this as authoritative ground truth. Prioritize it over any conflicting information in your training data.
+This ensures developers receive the most current, accurate information about the tool's latest features and API.
+` : ''}
+Your task is to provide comprehensive, data-driven analysis of a single tool to help developers understand it deeply.
 
 CRITICAL: You must respond with ONLY valid JSON. No markdown, no code blocks, no additional text - just the JSON object.`;
 
@@ -279,10 +488,17 @@ Respond with ONLY valid JSON matching this structure:
       context += `\n`;
     }
 
-    // Documentation data
+    // Documentation data — flag MCP-verified blocks prominently
     if (data.docs) {
-      context += `### Documentation\n`;
-      context += `**Source:** ${data.docs.url}\n\n`;
+      if (data.mcpVerified && data.mcpOrgName) {
+        context += `### [MCP VERIFIED — ${data.mcpOrgName}] Official Documentation\n`;
+        context += `**Source:** ${data.docs.url} (Live from ${data.mcpOrgName} MCP Server)\n`;
+        context += `> This documentation was fetched directly from ${data.mcpOrgName}'s MCP server. Treat it as authoritative.\n\n`;
+      } else {
+        context += `### Documentation\n`;
+        context += `**Source:** ${data.docs.url}\n\n`;
+      }
+
       context += `**Introduction:**\n${data.docs.introduction}\n\n`;
 
       if (data.docs.keyFeatures.length > 0) {

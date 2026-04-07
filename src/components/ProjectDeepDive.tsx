@@ -1,7 +1,8 @@
-import { DeepDiveAnalysis } from '@/types/analysis';
+import { DeepDiveAnalysis, LearningResource } from '@/types/analysis';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle2, XCircle, Star, AlertTriangle, Lightbulb, BookOpen, Layers } from 'lucide-react';
+import { VerificationBadge } from './VerificationBadge';
 
 interface ProjectDeepDiveProps {
   analysis: DeepDiveAnalysis;
@@ -11,18 +12,23 @@ export function ProjectDeepDive({ analysis }: ProjectDeepDiveProps) {
   return (
     <div className="space-y-6">
       {/* Header Card */}
-      <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-secondary/5 backdrop-blur">
+      <Card className={`bg-gradient-to-br from-primary/5 to-secondary/5 backdrop-blur ${analysis.verificationBadge ? 'border-emerald-500/50 border-2' : 'border-primary/20'}`}>
         <CardHeader>
-          <div className="flex items-start justify-between">
+          <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
-              <CardTitle className="text-4xl font-bold font-mono mb-2">
-                {analysis.name}
-              </CardTitle>
+              <div className="flex items-center gap-3 flex-wrap mb-2">
+                <CardTitle className="text-4xl font-bold font-mono">
+                  {analysis.name}
+                </CardTitle>
+                {analysis.verificationBadge && (
+                  <VerificationBadge badge={analysis.verificationBadge} size="md" />
+                )}
+              </div>
               <CardDescription className="text-lg mt-2">
                 {analysis.technicalSummary}
               </CardDescription>
             </div>
-            <div className="flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full">
+            <div className="flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full shrink-0">
               <Star className="w-5 h-5 fill-primary text-primary" />
               <span className="font-bold font-mono text-xl">
                 {analysis.communityRating.toFixed(1)}
@@ -127,7 +133,7 @@ export function ProjectDeepDive({ analysis }: ProjectDeepDiveProps) {
         </CardHeader>
         <CardContent className="pt-6">
           <p className="text-sm font-mono leading-relaxed text-muted-foreground whitespace-pre-line">
-            {analysis.detailedArchitecture}
+            {analysis.architecturalDesign}
           </p>
         </CardContent>
       </Card>
@@ -213,10 +219,20 @@ export function ProjectDeepDive({ analysis }: ProjectDeepDiveProps) {
         </CardHeader>
         <CardContent className="pt-6">
           <ul className="space-y-3">
-            {analysis.learningResources.map((resource, i) => (
+            {analysis.learningResources.map((resource: LearningResource, i) => (
               <li key={i} className="flex items-start gap-2 text-sm">
                 <BookOpen className="w-4 h-4 text-purple-600 dark:text-purple-400 mt-0.5 flex-shrink-0" />
-                <span>{resource}</span>
+                <div className="flex flex-col gap-0.5">
+                  <a
+                    href={resource.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-medium text-purple-700 dark:text-purple-300 hover:underline"
+                  >
+                    {resource.title}
+                  </a>
+                  <span className="text-xs text-muted-foreground">{resource.type}</span>
+                </div>
               </li>
             ))}
           </ul>

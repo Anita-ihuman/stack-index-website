@@ -253,8 +253,12 @@ export class CommunityService {
         return cached;
       }
 
-      // Normalize package name
+      // Normalize package name — null means "not on npm"
       const packageName = this.normalizePackageName(toolName);
+      if (!packageName) {
+        console.log(`[npm] Skipping non-npm tool "${toolName}"`);
+        return null;
+      }
 
       // Fetch package info
       const packageInfo = await this.npmClient.get(`/${packageName}`);
@@ -307,10 +311,26 @@ export class CommunityService {
   }
 
   /**
-   * Normalize package name for npm
+   * Normalize package name for npm. Returns null for non-npm tools.
    */
-  private normalizePackageName(toolName: string): string {
+  private normalizePackageName(toolName: string): string | null {
     const normalized = toolName.toLowerCase().trim();
+
+    // Tools with no npm package (null = skip npm fetch)
+    const noNpm = new Set([
+      'fastapi', 'go-fiber', 'kubernetes', 'docker', 'helm', 'nomad',
+      'podman', 'containerd', 'prometheus', 'grafana', 'opentelemetry', 'loki',
+      'jaeger', 'terraform', 'pulumi', 'ansible', 'crossplane', 'istio',
+      'linkerd', 'linkerd2', 'envoy', 'traefik', 'kong', 'kafka',
+      'apache kafka', 'rabbitmq', 'nats', 'pulsar', 'apache pulsar',
+      'postgresql', 'postgres', 'clickhouse', 'cockroachdb', 'cockroach',
+      'vault', 'hashicorp vault', 'falco', 'trivy', 'opa', 'open policy agent',
+      'dbt', 'airbyte', 'spark', 'apache spark', 'dagster',
+      'github-actions', 'github actions', 'argocd', 'argo-cd', 'gitlab-ci',
+      'flux', 'flux2', 'fluxcd', 'tekton', 'jenkins', 'circleci',
+    ]);
+
+    if (noNpm.has(normalized)) return null;
 
     // Common npm package name mappings
     const packageMap: Record<string, string> = {
@@ -335,9 +355,17 @@ export class CommunityService {
       'nest': '@nestjs/core',
       'nest.js': '@nestjs/core',
       'nestjs': '@nestjs/core',
+      'turborepo': 'turbo',
+      'turbo': 'turbo',
+      'pnpm': 'pnpm',
+      'bun': 'bun',
+      'redis': 'ioredis',
+      'mongodb': 'mongodb',
+      'mongo': 'mongodb',
+      'mysql': 'mysql2',
     };
 
-    return packageMap[normalized] || normalized;
+    return packageMap[normalized] ?? normalized;
   }
 }
 

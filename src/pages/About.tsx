@@ -3,7 +3,7 @@ import { Footer } from "@/components/Footer";
 
 const About = () => {
   return (
-    <div className="min-h-screen bg-gradient-hero">
+    <div className="min-h-screen bg-background">
       <Header />
       
       <main className="container py-16">

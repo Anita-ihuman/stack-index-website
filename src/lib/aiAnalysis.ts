@@ -78,10 +78,13 @@ CRITICAL: You must respond with ONLY valid JSON. No additional text before or af
     "pros": ["pro 1", "pro 2"],
     "cons": ["con 1", "con 2"]
   },
-  "detailedArchitecture": "Comprehensive architectural analysis",
+  "architecturalDesign": "Comprehensive architectural analysis",
   "bestPractices": ["practice 1", "practice 2"],
   "commonPitfalls": ["pitfall 1", "pitfall 2"],
-  "learningResources": ["resource 1", "resource 2"],
+  "learningResources": [
+    {"type": "Documentation", "title": "Title", "url": "https://example.com"},
+    {"type": "Tutorial", "title": "Title", "url": "https://example.com"}
+  ],
   "gotchas": ["gotcha 1", "gotcha 2"]
 }`;
 

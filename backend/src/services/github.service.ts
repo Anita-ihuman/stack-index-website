@@ -85,6 +85,82 @@ const TOOL_REPO_MAP: ToolRepoMap = {
   tailwind: 'tailwindlabs/tailwindcss',
   'tailwind css': 'tailwindlabs/tailwindcss',
   tailwindcss: 'tailwindlabs/tailwindcss',
+
+  // Container Orchestration
+  helm: 'helm/helm',
+  nomad: 'hashicorp/nomad',
+  podman: 'containers/podman',
+  containerd: 'containerd/containerd',
+
+  // CI/CD
+  'github-actions': '',       // no single repo
+  'github actions': '',
+  jenkins: 'jenkinsci/jenkins',
+  argocd: 'argoproj/argo-cd',
+  'argo-cd': 'argoproj/argo-cd',
+  'gitlab-ci': 'gitlabhq/gitlabhq',
+  flux: 'fluxcd/flux2',
+  flux2: 'fluxcd/flux2',
+  fluxcd: 'fluxcd/flux2',
+  tekton: 'tektoncd/pipeline',
+
+  // Observability
+  prometheus: 'prometheus/prometheus',
+  grafana: 'grafana/grafana',
+  opentelemetry: 'open-telemetry/opentelemetry-collector',
+  loki: 'grafana/loki',
+  jaeger: 'jaegertracing/jaeger',
+
+  // IaC
+  pulumi: 'pulumi/pulumi',
+  crossplane: 'crossplane/crossplane',
+
+  // Service Mesh & Networking
+  istio: 'istio/istio',
+  linkerd: 'linkerd/linkerd2',
+  linkerd2: 'linkerd/linkerd2',
+  envoy: 'envoyproxy/envoy',
+  traefik: 'traefik/traefik',
+  kong: 'Kong/kong',
+
+  // Databases
+  postgresql: 'postgres/postgres',
+  postgres: 'postgres/postgres',
+  mongodb: 'mongodb/mongo',
+  mongo: 'mongodb/mongo',
+  redis: 'redis/redis',
+  clickhouse: 'ClickHouse/ClickHouse',
+  cockroachdb: 'cockroachdb/cockroach',
+  cockroach: 'cockroachdb/cockroach',
+
+  // Message Queue
+  kafka: 'apache/kafka',
+  'apache kafka': 'apache/kafka',
+  rabbitmq: 'rabbitmq/rabbitmq-server',
+  nats: 'nats-io/nats-server',
+  pulsar: 'apache/pulsar',
+  'apache pulsar': 'apache/pulsar',
+
+  // Security
+  vault: 'hashicorp/vault',
+  'hashicorp vault': 'hashicorp/vault',
+  falco: 'falcosecurity/falco',
+  trivy: 'aquasecurity/trivy',
+  opa: 'open-policy-agent/opa',
+  'open policy agent': 'open-policy-agent/opa',
+
+  // Data & Analytics
+  dbt: 'dbt-labs/dbt-core',
+  airbyte: 'airbytehq/airbyte',
+  spark: 'apache/spark',
+  'apache spark': 'apache/spark',
+  dagster: 'dagster-io/dagster',
+
+  // Developer Tools
+  bun: 'oven-sh/bun',
+  pnpm: 'pnpm/pnpm',
+  turborepo: 'vercel/turbo',
+  turbo: 'vercel/turbo',
 };
 
 /**

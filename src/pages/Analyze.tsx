@@ -4,7 +4,7 @@ import { AIAnalysisContainer } from "@/components/AIAnalysisContainer";
 
 const Analyze = () => {
   return (
-    <div className="min-h-screen bg-gradient-hero">
+    <div className="min-h-screen bg-background">
       <Header />
 
       <section className="container py-12 md:py-16">

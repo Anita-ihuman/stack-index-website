@@ -1,14 +1,19 @@
-import { ComparisonAnalysis } from '@/types/analysis';
+import { EnhancedComparisonAnalysis, ComparisonAnalysis } from '@/types/analysis';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle2, XCircle, Star } from 'lucide-react';
+import { VerificationBadge } from './VerificationBadge';
+import { ScoringTable } from './ScoringTable';
+import { DecisionGuidance } from './DecisionGuidance';
+import { RiskAnalysis } from './RiskAnalysis';
 
 interface ComparisonViewProps {
-  analysis: ComparisonAnalysis;
+  analysis: ComparisonAnalysis | EnhancedComparisonAnalysis;
 }
 
 export function ComparisonView({ analysis }: ComparisonViewProps) {
   const { tools, comparisonSummary, recommendation } = analysis;
+  const enhanced = analysis as EnhancedComparisonAnalysis;
 
   return (
     <div className="space-y-8">
@@ -28,6 +33,11 @@ export function ComparisonView({ analysis }: ComparisonViewProps) {
         </CardContent>
       </Card>
 
+      {/* Enhanced: Scoring Table */}
+      {enhanced.scoringTable && (
+        <ScoringTable scoringTable={enhanced.scoringTable} />
+      )}
+
       {/* Side-by-Side Comparison Table */}
       <div className="grid md:grid-cols-2 gap-6">
         {tools.map((tool, index) => (
@@ -35,12 +45,17 @@ export function ComparisonView({ analysis }: ComparisonViewProps) {
             key={index}
             className="border-2 hover:border-primary/50 transition-all duration-300 bg-card"
           >
-            <CardHeader className="bg-secondary/20 border-b">
-              <div className="flex items-start justify-between">
-                <CardTitle className="text-2xl font-bold font-mono">
-                  {tool.name}
-                </CardTitle>
-                <div className="flex items-center gap-1 bg-primary/10 px-3 py-1 rounded-full">
+            <CardHeader className={`bg-secondary/20 border-b ${tool.verificationBadge ? 'border-l-4 border-l-emerald-500' : ''}`}>
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <CardTitle className="text-2xl font-bold font-mono">
+                    {tool.name}
+                  </CardTitle>
+                  {tool.verificationBadge && (
+                    <VerificationBadge badge={tool.verificationBadge} size="sm" />
+                  )}
+                </div>
+                <div className="flex items-center gap-1 bg-primary/10 px-3 py-1 rounded-full shrink-0">
                   <Star className="w-4 h-4 fill-primary text-primary" />
                   <span className="font-semibold font-mono text-sm">
                     {tool.communityRating.toFixed(1)}
@@ -147,6 +162,24 @@ export function ComparisonView({ analysis }: ComparisonViewProps) {
           </Card>
         ))}
       </div>
+
+      {/* Enhanced: Decision Guidance */}
+      {enhanced.decisionGuidance && (
+        <DecisionGuidance guidance={enhanced.decisionGuidance} />
+      )}
+
+      {/* Enhanced: Risk Analysis */}
+      {enhanced.riskAnalysis && (
+        <RiskAnalysis riskAnalysis={enhanced.riskAnalysis} />
+      )}
+
+      {/* Enhanced: AI Confidence Score */}
+      {enhanced.confidenceScore !== undefined && (
+        <div className="flex items-center justify-end gap-2 text-xs text-muted-foreground pt-2">
+          <span>AI Analysis Confidence:</span>
+          <span className="font-mono font-semibold text-foreground">{enhanced.confidenceScore}/100</span>
+        </div>
+      )}
     </div>
   );
 }

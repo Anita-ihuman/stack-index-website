@@ -4,7 +4,12 @@ import { documentationService } from './documentation.service';
 import { communityService } from './community.service';
 import { claudeService, AggregatedToolData } from './claude.service';
 import { cacheService, CacheService, CACHE_TTLS } from './cache.service';
+import { mcpRegistry } from './mcp-registry.service';
+import { mcpClient } from './mcp-client.service';
+import { toolCatalogService } from './tool-catalog.service';
+import { scoringService } from './scoring.service';
 import { AnalysisMetadata, AnalysisResponse } from '../types/analysis.types';
+import { ToolScore } from '../types/catalog.types';
 
 /**
  * Detect analysis type from input string
@@ -74,9 +79,24 @@ export class OrchestratorService {
 
     // Generate analysis with Claude
     const analysisStartTime = Date.now();
-    const analysis = type === 'comparison'
-      ? await claudeService.analyzeComparison(toolsData)
-      : await claudeService.analyzeDeepDive(toolsData[0]);
+    let analysis;
+    if (type === 'comparison') {
+      // Try enhanced comparison with scoring; fall back to base if catalog lookup fails
+      const scores = await this.fetchScoresForTools(tools);
+      const hasEnhancedData = toolsData.length > 1;
+      if (hasEnhancedData) {
+        try {
+          analysis = await claudeService.analyzeComparisonEnhanced(toolsData, scores);
+        } catch (enhancedErr) {
+          console.warn('[Orchestrator] Enhanced comparison failed, falling back:', enhancedErr);
+          analysis = await claudeService.analyzeComparison(toolsData);
+        }
+      } else {
+        analysis = await claudeService.analyzeComparison(toolsData);
+      }
+    } else {
+      analysis = await claudeService.analyzeDeepDive(toolsData[0]);
+    }
     const analysisDuration = Date.now() - analysisStartTime;
     console.log(`[Orchestrator] Claude analysis completed in ${analysisDuration}ms`);
 
@@ -95,34 +115,75 @@ export class OrchestratorService {
   }
 
   /**
-   * Fetch all data for tools in parallel
+   * Fetch all data for tools in parallel.
+   *
+   * Data priority per tool:
+   *   1. MCP Server (org-verified, live docs)   → mcpVerified = true
+   *   2. Documentation scraping (cheerio)
+   *   3. GitHub README fallback
+   *   4. Nothing (Claude falls back to training data)
    */
   private async fetchAllData(tools: string[]): Promise<AggregatedToolData[]> {
     const fetchPromises = tools.map((tool) =>
       this.limit(async () => {
         console.log(`[Orchestrator] Fetching data for: ${tool}`);
 
-        // Fetch all sources in parallel for this tool
+        // Fetch GitHub and community data in parallel (not affected by MCP)
         const [github, community] = await Promise.allSettled([
           githubService.fetchData(tool),
           communityService.fetchData(tool),
         ]);
 
         const githubData = github.status === 'fulfilled' ? github.value : null;
-
-        // Fetch documentation (pass GitHub README as fallback)
-        const docsResult = await documentationService.fetchData(
-          tool,
-          githubData?.readme?.content
-        );
-
         const communityData = community.status === 'fulfilled' ? community.value : null;
+
+        // ------------------------------------------------------------------
+        // MCP LAYER: check registry and attempt live doc fetch
+        // ------------------------------------------------------------------
+        const mcpConfig = mcpRegistry.get(tool);
+        let docsResult = null;
+        let mcpVerified = false;
+        let mcpOrgName: string | undefined;
+
+        if (mcpConfig) {
+          console.log(
+            `[Orchestrator] MCP server found for "${tool}" (${mcpConfig.orgName}) — fetching verified docs`
+          );
+          const mcpDocs = await mcpClient.fetchDocumentation(tool, mcpConfig);
+
+          if (mcpDocs) {
+            docsResult = mcpDocs; // already matches DocumentationData shape
+            mcpVerified = true;
+            mcpOrgName = mcpConfig.orgName;
+            console.log(`[Orchestrator] MCP docs fetched successfully for "${tool}"`);
+          } else {
+            console.log(
+              `[Orchestrator] MCP fetch failed for "${tool}" — falling back to scraping`
+            );
+          }
+        }
+
+        // ------------------------------------------------------------------
+        // Fallback: scrape official docs if MCP not available/failed
+        // ------------------------------------------------------------------
+        if (!docsResult) {
+          docsResult = await documentationService.fetchData(
+            tool,
+            githubData?.readme?.content
+          );
+        }
+
+        const mcpFallback = !!mcpConfig && !mcpVerified;
 
         return {
           tool,
           github: githubData || undefined,
           docs: docsResult || undefined,
           community: communityData || undefined,
+          mcpVerified,
+          mcpOrgName,
+          mcpServerUrl: mcpConfig?.mcpServerUrl,
+          mcpFallback,
         };
       })
     );
@@ -131,19 +192,28 @@ export class OrchestratorService {
   }
 
   /**
-   * Create metadata from fetched data
+   * Create metadata from fetched data — now includes MCP source tracking.
    */
   private createMetadata(toolsData: AggregatedToolData[]): AnalysisMetadata {
     const hasGitHub = toolsData.some((t) => t.github);
     const hasDocs = toolsData.some((t) => t.docs);
     const hasCommunity = toolsData.some((t) => t.community);
+    const hasMCP = toolsData.some((t) => t.mcpVerified);
+
+    const mcpVerifiedTools = toolsData
+      .filter((t) => t.mcpVerified)
+      .map((t) => t.tool);
+
+    const mcpFallbackTools = toolsData
+      .filter((t) => t.mcpFallback)
+      .map((t) => t.tool);
 
     // Calculate data ages (approximate)
     const now = new Date();
     const dataAge: AnalysisMetadata['dataAge'] = {};
 
     if (hasGitHub) {
-      dataAge.github = 'just now'; // Fresh data
+      dataAge.github = 'just now';
     }
 
     if (hasDocs) {
@@ -161,7 +231,7 @@ export class OrchestratorService {
     }
 
     if (hasCommunity) {
-      dataAge.community = 'just now'; // Fresh data
+      dataAge.community = 'just now';
     }
 
     return {
@@ -169,11 +239,34 @@ export class OrchestratorService {
         github: hasGitHub,
         documentation: hasDocs,
         community: hasCommunity,
+        mcp: hasMCP,
       },
       fetchedAt: now.toISOString(),
-      tokensUsed: 0, // Could be calculated if needed
+      tokensUsed: 0,
       dataAge,
+      mcpVerifiedTools: mcpVerifiedTools.length ? mcpVerifiedTools : undefined,
+      mcpFallbackTools: mcpFallbackTools.length ? mcpFallbackTools : undefined,
     };
+  }
+
+  /**
+   * Fetch pre-computed scores for tools using catalog service
+   */
+  private async fetchScoresForTools(tools: string[]): Promise<Array<ToolScore | null>> {
+    return Promise.all(
+      tools.map(async (toolName) => {
+        const slug = toolName.toLowerCase().replace(/[\s.]/g, '-');
+        const catalogEntry =
+          toolCatalogService.getBySlug(slug) ||
+          toolCatalogService.getBySlug(toolName.toLowerCase());
+        if (!catalogEntry) return null;
+        try {
+          return await scoringService.computeScore(catalogEntry);
+        } catch {
+          return null;
+        }
+      })
+    );
   }
 
   /**

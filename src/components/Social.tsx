@@ -23,7 +23,7 @@ export const Social = () => {
               href={social.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-3 px-6 py-4 rounded-lg bg-secondary border border-border hover:border-primary/50 hover:shadow-glow transition-all duration-300 hover:-translate-y-1"
+              className="group flex items-center gap-3 px-6 py-4 rounded-lg bg-secondary border border-border hover:border-primary/50 hover:opacity-90 transition-all duration-300 hover:-translate-y-1"
               aria-label={social.label}
             >
               <social.icon className="h-6 w-6 text-muted-foreground group-hover:text-primary transition-colors" />

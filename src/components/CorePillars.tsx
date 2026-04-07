@@ -36,10 +36,10 @@ export const CorePillars = () => {
           {pillars.map((pillar, index) => (
             <Card
               key={index}
-              className="group p-8 bg-gradient-card border-border hover:border-primary/50 transition-all duration-300 hover:shadow-card hover:-translate-y-1 cursor-pointer"
+              className="group p-8 bg-card border-border hover:border-primary/50 transition-all duration-300 hover:shadow-card hover:-translate-y-1 cursor-pointer"
             >
               <div className="flex items-start gap-6">
-                <div className="p-4 rounded-lg bg-secondary border border-border group-hover:border-primary/50 group-hover:shadow-glow transition-all duration-300">
+                <div className="p-4 rounded-lg bg-secondary border border-border group-hover:border-primary/50 group-hover:opacity-90 transition-all duration-300">
                   <pillar.icon className="h-8 w-8 text-primary" />
                 </div>
                 

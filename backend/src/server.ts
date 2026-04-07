@@ -67,6 +67,9 @@ app.get('/', (_req: Request, res: Response) => {
     endpoints: {
       health: '/api/health',
       analyze: '/api/analyze',
+      tools: '/api/tools',
+      categories: '/api/tools/categories',
+      search: '/api/search',
     },
   });
 });
@@ -75,6 +78,8 @@ app.get('/', (_req: Request, res: Response) => {
  * API Routes
  */
 import analysisRoutes from './routes/analysis.routes';
+import mcpRoutes from './routes/mcp.routes';
+import catalogRoutes from './routes/catalog.routes';
 import { generalRateLimiter } from './middleware/rateLimiter';
 
 // Apply general rate limiting to all API routes
@@ -82,6 +87,12 @@ app.use('/api', generalRateLimiter);
 
 // Analysis routes
 app.use('/api', analysisRoutes);
+
+// MCP registry routes (org registration + verification)
+app.use('/api', mcpRoutes);
+
+// Catalog, scoring, and search routes
+app.use('/api', catalogRoutes);
 
 /**
  * Error handling

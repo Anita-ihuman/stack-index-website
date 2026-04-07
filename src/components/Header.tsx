@@ -7,22 +7,16 @@ export const Header = () => {
   const navigate = useNavigate();
 
   const goToSection = (id: string) => {
-    // Robust scrolling: try to find the element repeatedly after navigation
     const tryScroll = (attempt = 0) => {
       const el = document.getElementById(id);
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-        return true;
-      }
-      if (attempt > 20) return false; // give up after ~2s
+      if (el) { el.scrollIntoView({ behavior: "smooth" }); return true; }
+      if (attempt > 20) return false;
       setTimeout(() => tryScroll(attempt + 1), 100);
       return false;
     };
 
     if (window.location.pathname !== "/") {
-      // navigate to home first, then start trying to scroll
       navigate("/");
-      // start polling shortly after navigation so we catch the element when it's mounted
       setTimeout(() => tryScroll(0), 120);
     } else {
       tryScroll(0);
@@ -30,40 +24,30 @@ export const Header = () => {
   };
 
   const scrollToContact = () => {
-    const contactSection = document.getElementById("contact");
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: "smooth" });
-    }
+    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-primary/20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         <Link to="/">
           <Logo />
         </Link>
-        
+
         <nav className="hidden md:flex items-center gap-8">
-          <button
-            onClick={() => goToSection("about")}
-            className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
-          >
-            About
-          </button>
-
-          <button
-            onClick={() => goToSection("services")}
-            className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
-          >
-            Services
-          </button>
-
-          <button
-            onClick={() => goToSection("newsletter")}
-            className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
-          >
-            Newsletter
-          </button>
+          {[
+            { label: "About",      action: () => goToSection("about") },
+            { label: "Services",   action: () => goToSection("services") },
+            { label: "Newsletter", action: () => goToSection("newsletter") },
+          ].map((item) => (
+            <button
+              key={item.label}
+              onClick={item.action}
+              className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+            >
+              {item.label}
+            </button>
+          ))}
 
           <Link
             to="/blog"
@@ -71,14 +55,20 @@ export const Header = () => {
           >
             Blogs
           </Link>
-          {/* AI Analyzer link removed from navigation to keep the feature hidden while retaining the route */}
+
+          {/* <Link
+            to="/tools"
+            className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+          >
+            Tools
+          </Link> */}
         </nav>
 
         <div className="flex items-center gap-4">
           <ThemeToggle />
-          <Button 
+          <Button
             onClick={scrollToContact}
-            className="bg-gradient-primary hover:shadow-glow transition-all"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground transition-colors border border-primary/50"
           >
             Contact Us
           </Button>
