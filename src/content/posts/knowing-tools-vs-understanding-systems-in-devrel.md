@@ -8,6 +8,8 @@ description: "Knowing how to use a tool can get you started. Understanding the s
 slug: "understanding-systems-approach-to-devrel"
 ---
 
+![DevRel Illustration](/posts/knowing-tools-vs-understanding-systems-in-devrel/systems-in-devrel.png)
+
 Every year, we are introduced to new tools that aim to ease developer experience. Tools that handle deploying in seconds, monitoring in real-time, and automating our automation. For many in Developer Relations, the job has become a race to master these tools: to be the person who knows the most flags in a CLI or the most obscure hooks in a library.
 
 But here’s the uncomfortable truth: Tools are ephemeral. Systems are eternal.
