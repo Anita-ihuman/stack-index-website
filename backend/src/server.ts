@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { env, isDevelopment } from './config/environment';
+import ogRoutes from "./routes/og.routes";
 import { initializeRedis, closeRedis, isRedisConnected } from './config/redis';
 import { errorHandler, notFoundHandler } from './middleware/errorMiddleware';
 
@@ -12,6 +13,8 @@ const PORT = env.PORT || 3001;
 /**
  * Middleware setup
  */
+// Mount OG route for social crawlers
+app.use("/og", ogRoutes);
 
 // Security headers
 app.use(helmet());

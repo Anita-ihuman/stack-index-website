@@ -9,6 +9,7 @@ const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.string().default('3001'),
   FRONTEND_URL: z.string().default('http://localhost:8080'),
+  SITE_URL: z.string().default('https://www.stackindex.io'),
 
   // Required API keys
   ANTHROPIC_API_KEY: z.string().min(1, 'ANTHROPIC_API_KEY is required'),
