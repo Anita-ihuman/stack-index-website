@@ -1,10 +1,11 @@
 ---
 title: "Understanding and Adopting a Systems Approach to DevRel"
+thumbnail: "/posts/knowing-tools-vs-understanding-systems-in-devrel/systems-in-devrel.png"
 date: "2026-04-02"
 tag: "#DevRel"
 author: "Anita Ihuman"
 description: "Knowing how to use a tool can get you started. Understanding the system behind it is what makes your DevRel expertise last."
-slug: "knowing-tools-vs-understanding-systems-in-devrel"
+slug: "understanding-systems-approach-to-devrel"
 ---
 
 Every year, we are introduced to new tools that aim to ease developer experience. Tools that handle deploying in seconds, monitoring in real-time, and automating our automation. For many in Developer Relations, the job has become a race to master these tools: to be the person who knows the most flags in a CLI or the most obscure hooks in a library.

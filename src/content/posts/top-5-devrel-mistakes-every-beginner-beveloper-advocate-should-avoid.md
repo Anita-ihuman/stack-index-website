@@ -1,5 +1,6 @@
 ---
 title: "Top 5 DevRel Mistakes Every Beginner Developer Advocate Should Avoid"
+thumbnail: "/posts/top-5-mistakes-every-beginner-devrel/banner.png"
 date: "2026-01-19"
 tag: "#DevRel"
 author: "Anita Ihuman"
