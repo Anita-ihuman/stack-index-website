@@ -86,6 +86,262 @@ const DOC_SOURCES: Record<string, DocSource> = {
       introduction: 'article',
     },
   },
+  // ── Container Orchestration ───────────────────────────────────────────────
+  kubernetes: {
+    url: 'https://kubernetes.io/docs/concepts/overview/',
+    selectors: {
+      introduction: '#page-content-wrapper',
+    },
+  },
+  docker: {
+    url: 'https://docs.docker.com/get-started/docker-overview/',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  helm: {
+    url: 'https://helm.sh/docs/topics/charts/',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  nomad: {
+    url: 'https://developer.hashicorp.com/nomad/docs/concepts/architecture',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  podman: {
+    url: 'https://docs.podman.io/en/stable/Introduction.html',
+    selectors: {
+      introduction: '.document',
+    },
+  },
+  // ── CI/CD ─────────────────────────────────────────────────────────────────
+  argocd: {
+    url: 'https://argo-cd.readthedocs.io/en/stable/',
+    selectors: {
+      introduction: '.document',
+    },
+  },
+  flux: {
+    url: 'https://fluxcd.io/flux/concepts/',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  jenkins: {
+    url: 'https://www.jenkins.io/doc/book/getting-started/',
+    selectors: {
+      introduction: '#content',
+    },
+  },
+  tekton: {
+    url: 'https://tekton.dev/docs/concepts/',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  // ── Infrastructure as Code ────────────────────────────────────────────────
+  terraform: {
+    url: 'https://developer.hashicorp.com/terraform/intro',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  pulumi: {
+    url: 'https://www.pulumi.com/docs/concepts/',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  ansible: {
+    url: 'https://docs.ansible.com/ansible/latest/getting_started/index.html',
+    selectors: {
+      introduction: '.document',
+    },
+  },
+  crossplane: {
+    url: 'https://docs.crossplane.io/latest/concepts/',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  // ── Observability ─────────────────────────────────────────────────────────
+  prometheus: {
+    url: 'https://prometheus.io/docs/introduction/overview/',
+    selectors: {
+      introduction: '.post-content',
+    },
+  },
+  grafana: {
+    url: 'https://grafana.com/docs/grafana/latest/introduction/',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  opentelemetry: {
+    url: 'https://opentelemetry.io/docs/what-is-opentelemetry/',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  loki: {
+    url: 'https://grafana.com/docs/loki/latest/get-started/overview/',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  jaeger: {
+    url: 'https://www.jaegertracing.io/docs/latest/',
+    selectors: {
+      introduction: '.post-content',
+    },
+  },
+  // ── Service Mesh & Networking ─────────────────────────────────────────────
+  istio: {
+    url: 'https://istio.io/latest/docs/overview/what-is-istio/',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  linkerd: {
+    url: 'https://linkerd.io/2.15/overview/',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  traefik: {
+    url: 'https://doc.traefik.io/traefik/',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  envoy: {
+    url: 'https://www.envoyproxy.io/docs/envoy/latest/intro/what_is_envoy',
+    selectors: {
+      introduction: '.document',
+    },
+  },
+  kong: {
+    url: 'https://docs.konghq.com/gateway/latest/',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  // ── Security ──────────────────────────────────────────────────────────────
+  vault: {
+    url: 'https://developer.hashicorp.com/vault/docs/what-is-vault',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  falco: {
+    url: 'https://falco.org/docs/overview/',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  trivy: {
+    url: 'https://aquasecurity.github.io/trivy/latest/',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  opa: {
+    url: 'https://www.openpolicyagent.org/docs/latest/',
+    selectors: {
+      introduction: '.markdown',
+    },
+  },
+  // ── Databases ─────────────────────────────────────────────────────────────
+  postgresql: {
+    url: 'https://www.postgresql.org/docs/current/intro-whatis.html',
+    selectors: {
+      introduction: '#DOCCONTENTS',
+    },
+  },
+  mongodb: {
+    url: 'https://www.mongodb.com/docs/manual/introduction/',
+    selectors: {
+      introduction: '.main-column',
+    },
+  },
+  redis: {
+    url: 'https://redis.io/docs/about/',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  clickhouse: {
+    url: 'https://clickhouse.com/docs/en/intro',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  cockroachdb: {
+    url: 'https://www.cockroachlabs.com/docs/stable/cockroachdb-in-brief',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  // ── Message Queue ─────────────────────────────────────────────────────────
+  kafka: {
+    url: 'https://kafka.apache.org/documentation/#introduction',
+    selectors: {
+      introduction: '.section',
+    },
+  },
+  rabbitmq: {
+    url: 'https://www.rabbitmq.com/docs/tutorials',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  nats: {
+    url: 'https://docs.nats.io/nats-concepts/overview',
+    selectors: {
+      introduction: '.gitbook-page-body',
+    },
+  },
+  // ── Backend Frameworks ────────────────────────────────────────────────────
+  nestjs: {
+    url: 'https://docs.nestjs.com/',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  'go-fiber': {
+    url: 'https://docs.gofiber.io/',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  fastapi: {
+    url: 'https://fastapi.tiangolo.com/',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  // ── Data & Analytics ──────────────────────────────────────────────────────
+  dbt: {
+    url: 'https://docs.getdbt.com/docs/introduction',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  airbyte: {
+    url: 'https://docs.airbyte.com/',
+    selectors: {
+      introduction: 'article',
+    },
+  },
+  dagster: {
+    url: 'https://docs.dagster.io/getting-started',
+    selectors: {
+      introduction: 'article',
+    },
+  },
 };
 
 /**

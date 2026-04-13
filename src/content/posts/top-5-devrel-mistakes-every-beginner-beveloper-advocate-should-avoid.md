@@ -2,7 +2,7 @@
 title: "Top 5 DevRel Mistakes Every Beginner Developer Advocate Should Avoid"
 thumbnail: "/posts/top-5-mistakes-every-beginner-devrel/banner.png"
 date: "2026-01-19"
-tag: "#DevRel"
+tag: "#DevRelPerspective"
 author: "Anita Ihuman"
 description: "Common DevRel mistakes beginner Developer Advocates make—and how to avoid them when starting a career in DevRel.."
 slug: "top-5-devrel-mistakes-every-beginner-beveloper-advocate-should-avoid" 

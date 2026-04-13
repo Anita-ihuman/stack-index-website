@@ -45,14 +45,15 @@ app.get('/api/health', async (_req: Request, res: Response) => {
   const githubConfigured = !!env.GITHUB_TOKEN;
   const claudeConfigured = !!env.ANTHROPIC_API_KEY;
 
-  const allServicesHealthy = redisConnected && githubConfigured && claudeConfigured;
-
-  res.status(allServicesHealthy ? 200 : 503).json({
-    status: allServicesHealthy ? 'healthy' : 'degraded',
+  // The server is healthy as long as it can accept requests.
+  // Redis and GitHub are optional/additive — their absence is degraded, not down.
+  res.status(200).json({
+    status: claudeConfigured ? 'healthy' : 'degraded',
     services: {
-      redis: redisConnected,
+      redis: redisConnected ? 'connected' : 'memory-cache',
       github: githubConfigured,
       claude: claudeConfigured,
+      brevo: !!env.BREVO_API_KEY,
     },
     version: '1.0.0',
     environment: env.NODE_ENV,
@@ -83,6 +84,8 @@ app.get('/', (_req: Request, res: Response) => {
 import analysisRoutes from './routes/analysis.routes';
 import mcpRoutes from './routes/mcp.routes';
 import catalogRoutes from './routes/catalog.routes';
+import contactRoutes from './routes/contact.routes';
+import newsletterRoutes from './routes/newsletter.routes';
 import { generalRateLimiter } from './middleware/rateLimiter';
 
 // Apply general rate limiting to all API routes
@@ -96,6 +99,12 @@ app.use('/api', mcpRoutes);
 
 // Catalog, scoring, and search routes
 app.use('/api', catalogRoutes);
+
+// Contact form route
+app.use('/api', contactRoutes);
+
+// Newsletter subscription route
+app.use('/api', newsletterRoutes);
 
 /**
  * Error handling

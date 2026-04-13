@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { SEO } from "@/components/SEO";
 
 const colors = {
   purple: { bg: "#EEEDFE", accent: "#534AB7", dark: "#3C3489" },
@@ -172,6 +173,11 @@ const Roadmap = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="DevRel Roadmap — From Beginner to Senior Developer Advocate"
+        description="An 18-month roadmap for Developer Relations professionals — covering tool adoption strategy, community building, developer program design, and the DevRel career path."
+        path="/roadmap"
+      />
       <style>{`
         .rm-root { font-family: 'Syne', sans-serif; }
         .rm-mono { font-family: 'JetBrains Mono', monospace; }

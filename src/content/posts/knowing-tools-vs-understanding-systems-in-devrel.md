@@ -2,7 +2,7 @@
 title: "Understanding and Adopting a Systems Approach to DevRel"
 thumbnail: "/posts/knowing-tools-vs-understanding-systems-in-devrel/systems-in-devrel.png"
 date: "2026-04-02"
-tag: "#DevRel"
+tag: "#DevRelPerspective"
 author: "Anita Ihuman"
 description: "Knowing how to use a tool can get you started. Understanding the system behind it is what makes your DevRel expertise last."
 slug: "understanding-systems-approach-to-devrel"

@@ -35,3 +35,6 @@ coverage/
 
 # Misc
 .cache/
+
+# Subscriber data — contains real emails, never commit
+data/subscribers.json

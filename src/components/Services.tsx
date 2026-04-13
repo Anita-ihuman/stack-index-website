@@ -1,26 +1,30 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Newspaper, Mic, Video, BookOpen } from "lucide-react";
+import { GitCompare, MessageSquare, Search, ArrowRightLeft } from "lucide-react";
 
 const services = [
   {
-    icon: Newspaper,
-    title: "Technical Content & Editorial",
-    description: "Weekly curated developer tools, news, and insights delivered to your inbox.",
+    icon: GitCompare,
+    title: "AI Tool Comparisons",
+    description:
+      "Side-by-side comparisons grounded in live documentation via MCP — not vendor blogs, not stale training data. Clear tradeoffs that close the trust gap between discovery and decision.",
   },
   {
-    icon: Mic,
-    title: "Multi-Channel Distribution",
-    description: "Bring your tool closer to developers, DevRel leaders, and open source maintainers.",
+    icon: MessageSquare,
+    title: "Community DX Reviews",
+    description:
+      "Insights from engineers who've shipped with these tools in production. The kind of context great DevRel surfaces — the real experience no feature matrix will ever capture.",
   },
   {
-    icon: Video,
-    title: "Market Intelligence & Discovery Platform",
-    description: "Source, compare, and validate your features against competitors.",
+    icon: Search,
+    title: "ToolIndex",
+    description:
+      "57+ DevOps and cloud tools scored across 8 real dimensions — contributor velocity, documentation quality, community health, and more. Find the right tool, not just any tool.",
   },
   {
-    icon: BookOpen,
-    title: "Strategic DevRel & Community Advisory",
-    description: "Curated guides, career picks, and developer ecosystem insights.",
+    icon: ArrowRightLeft,
+    title: "Decision & Migration Guides",
+    description:
+      "Workload-specific 'use X if Y' guidance and migration paths between tools. Because the goal isn't more research — it's a team aligned and shipping with confidence.",
   },
 ];
 
@@ -30,12 +34,13 @@ export const Services = () => {
       <div className="container">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4 text-foreground">
-            Your Developer{" "}
-            <span className="text-primary">Media Ecosystem</span>
+            The Intelligence Layer Between{" "}
+            <span className="text-primary">Discovery and Adoption</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Everything you need to stay informed about the tools and platforms shaping modern
-            development.
+            Stack Index does what great DevRel does — bridges the gap between finding a tool
+            and confidently committing to it. Powered by verified docs, live signals, and
+            community wisdom.
           </p>
         </div>
 

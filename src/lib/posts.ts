@@ -5,6 +5,8 @@ type PostMeta = {
   author?: string;
   description?: string;
   slug: string;
+  thumbnail?: string;
+  relatedTools?: string[]; // comma-separated tool slugs in frontmatter e.g. "kubernetes,helm"
 };
 
 type Post = {
@@ -12,15 +14,7 @@ type Post = {
   content: string;
 };
 
-// Load all markdown files from src/content/posts as raw text.
-// Use an eager glob with `as: 'raw'` so files are loaded at module init and available in dev/hmr.
-// This avoids resolver functions and makes debugging simpler.
 const eagerModules = import.meta.glob('/src/content/posts/*.md', { as: 'raw', eager: true }) as Record<string, string>;
-
-// Debug: show which file keys matched the glob
-try {
-  console.log('[posts] glob keys:', Object.keys(eagerModules));
-} catch (e) {}
 
 const parseFrontmatter = (raw: string) => {
   const fmMatch = raw.match(/^---\s*([\s\S]*?)\s*---\s*/);
@@ -35,7 +29,12 @@ const parseFrontmatter = (raw: string) => {
     const key = line.slice(0, sep).trim();
     let val = line.slice(sep + 1).trim();
     if (val.startsWith('"') && val.endsWith('"')) val = val.slice(1, -1);
-    meta[key] = val;
+    // parse comma-separated relatedTools into an array
+    if (key === 'relatedTools') {
+      meta[key] = val.split(',').map((s) => s.trim()).filter(Boolean);
+    } else {
+      meta[key] = val;
+    }
   }
   return { meta, body };
 };
@@ -61,28 +60,17 @@ export const getAllPosts = async (): Promise<Post[]> => {
       // ignore
     }
   }
-  // sort by date descending if available
   results.sort((a, b) => {
     if (a.meta.date && b.meta.date) return b.meta.date.localeCompare(a.meta.date);
     return 0;
   });
-  // DEBUG: temporary log to show what posts were discovered by the loader
-  try {
-    console.log("[posts] loaded", results.length, "posts ->", results.map(r => ({ slug: r.meta.slug, title: r.meta.title })));
-  } catch (e) {
-    // ignore logging errors in environments without console
-  }
   return results;
 };
 
 export const getPostBySlug = async (slug: string): Promise<Post | null> => {
   const posts = await getAllPosts();
   const slugNorm = String(slug || '').trim().toLowerCase();
-  try {
-    console.log('[getPostBySlug] looking for slug=', slugNorm, 'available posts=', posts.map(p => p.meta.slug));
-  } catch (e) {}
   const found = posts.find((p) => String(p.meta.slug || '').trim().toLowerCase() === slugNorm);
-  try { console.log('[getPostBySlug] found=', !!found); } catch (e) {}
   return found ?? null;
 };
 

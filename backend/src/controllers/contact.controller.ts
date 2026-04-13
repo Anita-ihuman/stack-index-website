@@ -13,6 +13,7 @@ export const submitContact = async (req: Request, res: Response) => {
     return res.status(200).json({ ok: true, info });
   } catch (error: any) {
     console.error('[Contact] Failed to send email:', error?.message || error);
-    return res.status(500).json({ error: 'Failed to send contact email' });
+    console.error('[Contact] Full error:', JSON.stringify(error, null, 2));
+    return res.status(500).json({ error: 'Failed to send contact email', detail: error?.message });
   }
 };

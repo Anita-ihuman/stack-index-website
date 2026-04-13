@@ -1,5 +1,6 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { SEO } from "@/components/SEO";
 import { Video, Calendar } from "lucide-react";
 
 // ── Past webinars ──────────────────────────────────────────────────────────
@@ -48,6 +49,11 @@ const Events = () => {
         }
       `}</style>
 
+      <SEO
+        title="DevRel Strategy Room — Webinar Series"
+        description="Live sessions exploring DevRel strategy, tool adoption psychology, and developer program design — from practitioners who've built in the trenches."
+        path="/events"
+      />
       <Header />
 
       <main className="ev-root">
@@ -67,7 +73,7 @@ const Events = () => {
               marginBottom: "1.25rem",
               border: "0.5px solid rgba(83,74,183,0.35)",
             }}>
-              DevRel Strategy Room · Webinar Series
+              Webinar Series · Season 1
             </span>
 
             <h1 style={{
@@ -77,8 +83,8 @@ const Events = () => {
               marginBottom: "1rem",
               color: v.fg,
             }}>
-              Past Webinars &{" "}
-              <span style={{ color: "#534AB7" }}>Upcoming Events</span>
+              DevRel{" "}
+              <span style={{ color: "#534AB7" }}>Strategy Room</span>
             </h1>
 
             <p style={{
@@ -88,8 +94,8 @@ const Events = () => {
               fontSize: "1.0625rem",
               lineHeight: 1.65,
             }}>
-              Deep-dive sessions on strategic DevRel, community building, and developer program
-              design — built for practitioners ready to lead.
+              Live sessions exploring DevRel strategy, tool adoption psychology, and developer
+              program design — from the perspective of practitioners who've built in the trenches.
             </p>
           </div>
 
@@ -97,7 +103,7 @@ const Events = () => {
           <section style={{ marginBottom: "3.5rem" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: "1.25rem" }}>
               <Video size={20} style={{ color: "#534AB7", flexShrink: 0 }} />
-              <h2 style={{ fontSize: "1.2rem", fontWeight: 700, margin: 0, color: v.fg }}>Past Webinars</h2>
+              <h2 style={{ fontSize: "1.2rem", fontWeight: 700, margin: 0, color: v.fg }}>Past Sessions</h2>
               <span className="ev-mono" style={{
                 backgroundColor: "rgba(83,74,183,0.12)",
                 color: "#534AB7",
@@ -189,7 +195,7 @@ const Events = () => {
           <section>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: "1.25rem" }}>
               <Calendar size={20} style={{ color: "#1D9E75", flexShrink: 0 }} />
-              <h2 style={{ fontSize: "1.2rem", fontWeight: 700, margin: 0, color: v.fg }}>Upcoming Events</h2>
+              <h2 style={{ fontSize: "1.2rem", fontWeight: 700, margin: 0, color: v.fg }}>Upcoming Sessions</h2>
             </div>
 
             {upcomingEvents.length > 0 ? (
@@ -240,13 +246,13 @@ const Events = () => {
                   <Calendar size={24} style={{ color: v.fgMuted }} />
                 </div>
                 <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 8, marginTop: 0, color: v.fg }}>
-                  More sessions coming soon
+                  Next session being scheduled
                 </h3>
                 <p style={{ fontSize: 14, color: v.fgMuted, maxWidth: 400, margin: "0 auto 1.25rem" }}>
-                  The next DevRel Strategy Room session is being scheduled.
-                  Join the newsletter to be the first to know.
+                  Season 2 of the DevRel Strategy Room is in the works.
+                  Join the newsletter to get notified when it drops.
                 </p>
-                <a href="/newsletter" style={{
+                <a href="/#newsletter" style={{
                   display: "inline-block",
                   backgroundColor: "#534AB7",
                   color: "white",

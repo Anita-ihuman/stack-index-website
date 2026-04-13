@@ -148,6 +148,26 @@ export const catalogApi = {
 };
 
 /**
+ * Newsletter subscription API
+ */
+export const newsletterApi = {
+  async subscribe(data: { email: string; firstName: string; source?: string }) {
+    const res = await apiClient.post<{ ok: boolean; alreadySubscribed: boolean }>('/newsletter/subscribe', data);
+    return res.data;
+  },
+};
+
+/**
+ * Contact form API
+ */
+export const contactApi = {
+  async submit(data: { firstName: string; lastName: string; email: string; message: string }) {
+    const res = await apiClient.post<{ ok: boolean }>('/contact', data);
+    return res.data;
+  },
+};
+
+/**
  * Analysis API functions
  */
 export const analysisApi = {

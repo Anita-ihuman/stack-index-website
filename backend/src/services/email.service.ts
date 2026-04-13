@@ -24,9 +24,14 @@ export const sendContactEmail = async (payload: ContactPayload) => {
   const transporter = nodemailer.createTransport({
     host: env.SMTP_HOST,
     port,
-    secure: port === 465, // true for 465, false for other ports
+    secure: port === 465,
+    requireTLS: port === 587,
     auth: env.SMTP_USER && env.SMTP_PASS ? { user: env.SMTP_USER, pass: env.SMTP_PASS } : undefined,
+    tls: { rejectUnauthorized: false },
   });
+
+  // Verify connection before attempting to send
+  await transporter.verify();
 
   const subject = `New contact form submission from ${payload.firstName} ${payload.lastName ?? ''}`.trim();
 

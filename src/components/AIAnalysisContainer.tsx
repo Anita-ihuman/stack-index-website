@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { ComparisonView } from './ComparisonView';
 import { ProjectDeepDive } from './ProjectDeepDive';
@@ -12,7 +13,15 @@ import { Badge } from '@/components/ui/badge';
 import { Loader2, Search, Zap, Database, FileText, Users, Clock, ShieldCheck, ShieldAlert } from 'lucide-react';
 import { AnalysisMetadata } from '@/lib/apiClient';
 
-export function AIAnalysisContainer() {
+interface AIAnalysisContainerProps {
+  /** Pre-seed the input and auto-trigger analysis (e.g. from a tool card click) */
+  initialInput?: string;
+  /** Compact mode — smaller heading, used inside side panels */
+  compact?: boolean;
+}
+
+export function AIAnalysisContainer({ initialInput, compact = false }: AIAnalysisContainerProps) {
+  const [searchParams] = useSearchParams();
   const [input, setInput] = useState('');
   const [analysisType, setAnalysisType] = useState<'comparison' | 'deepdive' | null>(null);
   const [metadata, setMetadata] = useState<AnalysisMetadata | null>(null);
@@ -28,6 +37,30 @@ export function AIAnalysisContainer() {
       }
     },
   });
+
+  const triggerAnalysis = (value: string) => {
+    if (!value.trim()) return;
+    setInput(value.trim());
+    const type = detectAnalysisType(value.trim());
+    mutation.mutate({ input: value.trim(), type });
+  };
+
+  // Seed from prop (tool card click) — runs when initialInput changes
+  useEffect(() => {
+    if (initialInput?.trim()) {
+      triggerAnalysis(initialInput.trim());
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialInput]);
+
+  // Seed from ?input= URL param (standalone /analyze page)
+  useEffect(() => {
+    const urlInput = searchParams.get('input');
+    if (urlInput?.trim()) {
+      triggerAnalysis(urlInput.trim());
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleAnalyze = () => {
     if (!input.trim()) return;
@@ -49,14 +82,16 @@ export function AIAnalysisContainer() {
       {/* Input Section */}
       <Card className="border-primary/30 shadow-xl bg-card/80 backdrop-blur">
         <CardHeader>
-          <CardTitle className="text-3xl font-bold flex items-center gap-2">
-            <Zap className="w-8 h-8 text-primary" />
+          <CardTitle className={`font-bold flex items-center gap-2 ${compact ? 'text-lg' : 'text-3xl'}`}>
+            <Zap className={`text-primary ${compact ? 'w-5 h-5' : 'w-8 h-8'}`} />
             AI Tool Analyzer
           </CardTitle>
-          <CardDescription className="text-base">
-            Compare multiple tools or get a deep-dive analysis of a single tool.
-            Just enter the tool name(s) below.
-          </CardDescription>
+          {!compact && (
+            <CardDescription className="text-base">
+              Compare multiple tools or get a deep-dive analysis of a single tool.
+              Just enter the tool name(s) below.
+            </CardDescription>
+          )}
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex gap-3">

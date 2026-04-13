@@ -1,5 +1,6 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { SEO } from "@/components/SEO";
 import { BlogCard } from "@/components/BlogCard";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -12,7 +13,7 @@ const blogPosts = [
 
 ];
 
-const tags = ["All", "#DevRel", "#PlatformEngineering", "#OpenSource", "#ToolReview", "#AI", "#DevOps"];
+const tags = ["All", "#ToolReview", "#DevOps", "#CloudTooling", "#IaC", "#Observability", "#DevRelPerspective", "#PlatformEngineering"];
 
 const Blog = () => {
   const [selectedTag, setSelectedTag] = useState("All");
@@ -21,8 +22,6 @@ const Blog = () => {
 
   useEffect(() => {
     getAllPosts().then((p) => {
-      // debug: log raw posts returned from loader
-      try { console.log('[blog] getAllPosts ->', p.map(x => ({ slug: x.meta.slug, title: x.meta.title }))); } catch (e) {}
       const mapped = p.map((x) => ({ ...x.meta, description: x.meta.description || '', author: x.meta.author, date: x.meta.date }));
       setPosts(mapped);
     });
@@ -34,6 +33,11 @@ const Blog = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Blog — DevOps Tool Reviews & Platform Engineering Insights"
+        description="Deep dives into DevOps tools, cloud infrastructure decisions, platform engineering stories, and the DevRel perspective on tool adoption."
+        path="/blog"
+      />
       <Header />
       
       <main className="container py-16">
@@ -90,16 +94,17 @@ const Blog = () => {
               <Card className="bg-card border-border sticky top-24">
                 <CardContent className="p-6">
                   <h3 className="text-xl font-bold mb-4 text-foreground">
-                    Want to write for Stack Index?
+                    Stay in the loop
                   </h3>
                   <p className="text-muted-foreground mb-6 text-sm">
-                    Share your insights, stories, and expertise with the developer community.
+                    Get weekly DevOps tool intelligence, honest comparisons, and practitioner
+                    stories — straight to your inbox.
                   </p>
                   <Button
                     className="w-full bg-primary hover:bg-primary/90 transition-colors"
-                    onClick={() => navigate('/create-post')}
+                    onClick={() => navigate('/#newsletter')}
                   >
-                    Submit Your Article →
+                    Join the Newsletter →
                   </Button>
                 </CardContent>
               </Card>

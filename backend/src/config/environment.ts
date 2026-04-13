@@ -27,8 +27,12 @@ const envSchema = z.object({
   SMTP_USER: z.string().optional(),
   SMTP_PASS: z.string().optional(),
 
-  // Cache configuration
-  REDIS_URL: z.string().default('redis://localhost:6379'),
+  // Email (newsletter) — Brevo
+  BREVO_API_KEY: z.string().optional(),
+  BREVO_LIST_ID: z.string().optional(),
+
+  // Cache configuration — Redis is optional; leave REDIS_URL unset to use in-memory cache only
+  REDIS_URL: z.string().default(''),
   REDIS_PASSWORD: z.string().optional(),
   CACHE_ENABLED: z.string().default('true'),
 
@@ -62,7 +66,7 @@ export const env = parseEnv();
 
 // Helper to check if Redis is enabled
 export const isRedisEnabled = (): boolean => {
-  return env.CACHE_ENABLED === 'true' && !!env.REDIS_URL;
+  return env.CACHE_ENABLED === 'true' && !!env.REDIS_URL && env.REDIS_URL !== '';
 };
 
 // Helper to check if running in production

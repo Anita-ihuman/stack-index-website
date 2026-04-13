@@ -45,18 +45,36 @@ export const Footer = () => {
           <div className="flex flex-col gap-4">
             <Logo />
             <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
-              We help dev-facing companies tell authentic stories and reach technical
-              audiences — and help developers find the ideal tools.
+              The intelligence layer that bridges discovery and adoption — the way great DevRel does.
             </p>
             <span className="text-xs font-mono text-muted-foreground">
-              © Stack Index 2025
+              © Stack Index {new Date().getFullYear()}
             </span>
           </div>
 
-          {/* Education */}
+          {/* Platform */}
           <div>
             <h3 className="font-semibold text-foreground mb-4 text-sm uppercase tracking-widest font-mono">
-              Education
+              Platform
+            </h3>
+            <Link
+              to="/tools"
+              className="text-sm text-muted-foreground hover:text-accent transition-colors block mb-2"
+            >
+              Tools Catalog
+            </Link>
+            <Link
+              to="/analyze"
+              className="text-sm text-muted-foreground hover:text-accent transition-colors block"
+            >
+              AI Analyzer
+            </Link>
+          </div>
+
+          {/* Learn */}
+          <div>
+            <h3 className="font-semibold text-foreground mb-4 text-sm uppercase tracking-widest font-mono">
+              Learn
             </h3>
             <Link
               to="/blog"
@@ -66,9 +84,15 @@ export const Footer = () => {
             </Link>
             <Link
               to="/roadmap"
-              className="text-sm text-muted-foreground hover:text-accent transition-colors block"
+              className="text-sm text-muted-foreground hover:text-accent transition-colors block mb-2"
             >
               DevRel Roadmap
+            </Link>
+            <Link
+              to="/events"
+              className="text-sm text-muted-foreground hover:text-accent transition-colors block"
+            >
+              DevRel Strategy Room
             </Link>
           </div>
 
@@ -77,20 +101,13 @@ export const Footer = () => {
             <h3 className="font-semibold text-foreground mb-4 text-sm uppercase tracking-widest font-mono">
               Community
             </h3>
-            {/* Updated: anchor that scrolls to newsletter section on the homepage */}
             <a
               href="/#newsletter"
               onClick={goToNewsletter}
-              className="text-sm text-muted-foreground hover:text-accent transition-colors block mb-2"
+              className="text-sm text-muted-foreground hover:text-accent transition-colors block"
             >
               Newsletter
             </a>
-            <Link
-              to="/events"
-              className="text-sm text-muted-foreground hover:text-accent transition-colors block"
-            >
-              Events &amp; Webinars
-            </Link>
           </div>
 
           {/* Connect */}
@@ -142,17 +159,17 @@ export const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom bar
+        {/* Bottom bar */}
         <div className="border-t border-border/60 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <span className="text-xs font-mono text-muted-foreground">
-            Built for the developer community.
+            Built by a developer advocate, for the community that builds infrastructure.
           </span>
           <div className="flex gap-2 items-center">
             <span className="inline-block w-2 h-2 rounded-full bg-primary" />
             <span className="inline-block w-2 h-2 rounded-full bg-accent" />
             <span className="inline-block w-2 h-2 rounded-full" style={{ backgroundColor: "#534AB7" }} />
           </div>
-        </div> */}
+        </div>
       </div>
     </footer>
   );

@@ -1,26 +1,30 @@
-import { FileText, Headphones, Youtube, Mail } from "lucide-react";
+import { ShieldCheck, Users, Zap, BarChart2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 const pillars = [
   {
-    icon: FileText,
-    title: "Articles & Editorials",
-    description: "Real stories from engineers and DevRel leaders.",
+    icon: ShieldCheck,
+    title: "Verified, Not Assumed",
+    description:
+      "Our AI reads live documentation via MCP — not stale training data. Every insight is grounded in what tools actually do today, eliminating the hallucinations that break trust in AI-generated advice.",
   },
   {
-    icon: Headphones,
-    title: "StackIndex Podcast",
-    description: "Weekly conversations with devs, founders, and creators.",
+    icon: Users,
+    title: "The DevRel Advantage",
+    description:
+      "Built by a developer advocate who understands how developers actually evaluate and adopt tools — not just compare features. Stack Index surfaces the context that turns curiosity into confidence.",
   },
   {
-    icon: Youtube,
-    title: "YouTube Channel",
-    description: "Tool explainers, platform diaries, and DevOps roadmaps.",
+    icon: Zap,
+    title: "Minutes, Not Weeks",
+    description:
+      "Weeks of scattered research — vendor blogs, Reddit threads, outdated docs — condensed into minutes of clarity. Workload-specific guidance so your team aligns and ships instead of debating.",
   },
   {
-    icon: Mail,
-    title: "Dev Resource Debut",
-    description: "Weekly drop of new tools, updates, and career picks.",
+    icon: BarChart2,
+    title: "Live Tool Intelligence",
+    description:
+      "Every tool scored across 8 real dimensions: contributor velocity, issue resolution, documentation quality, community health, and enterprise adoption — pulled from live sources, not last year's snapshot.",
   },
 ];
 
@@ -28,9 +32,12 @@ export const CorePillars = () => {
   return (
     <section className="py-24 px-6 bg-gradient-to-b from-background to-secondary/30">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold mb-16 text-center text-foreground">
-          Core Pillars
+        <h2 className="text-4xl md:text-5xl font-bold mb-4 text-center text-foreground">
+          Why Stack Index
         </h2>
+        <p className="text-lg text-muted-foreground text-center max-w-2xl mx-auto mb-16">
+          The intelligence layer that bridges discovery and adoption — the way great DevRel does.
+        </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {pillars.map((pillar, index) => (

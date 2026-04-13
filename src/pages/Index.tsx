@@ -4,77 +4,37 @@ import { Newsletter } from "@/components/Newsletter";
 import { Services } from "@/components/Services";
 import { About } from "@/components/About";
 import { Contact } from "@/components/Contact";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import SubstackEmbed from "@/components/SubstackEmbed";
-import SupascribeEmbed from "@/components/SupascribeEmbed";
-
-const pastIssues = [
-  { issue: 1, title: "Coming Soon", date: "Coming Soon" },
-  { issue: 2, title: "Coming Soon", date: "Coming Soon" },
-  { issue: 3, title: "Coming Soon", date: "Coming Soon" },
-  { issue: 4, title: "Coming Soon", date: "Coming Soon" },
-  { issue: 5, title: "Coming Soon", date: "Coming Soon" },
-  { issue: 6, title: "Coming Soon", date: "Coming Soon" },
-];
+import { SEO } from "@/components/SEO";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="DevOps & Cloud Tooling Intelligence Platform"
+        description="Stack Index is where DevOps engineers, platform teams, and SREs discover, compare, and confidently adopt infrastructure tools — through AI-verified documentation and real practitioner experience."
+        path="/"
+      />
       <Header />
-      
+
       {/* Hero Section */}
       <section className="container py-24">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground">
-            Your Source for{" "}
-            <span className="text-primary">Developer Tools</span>,
-            Stories, and{" "}
-            <span className="text-accent">Insights</span>.
+            Stop Researching.{" "}
+            <span className="text-primary">Start Building.</span>
           </h1>
-
           <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto">
-            Discover the tools, platforms, and people shaping modern infrastructure, DevOps, and open source.
+            Stack Index is the DevOps and cloud tooling intelligence platform — where engineering
+            teams discover, compare, and confidently adopt tools through AI-verified documentation
+            and real practitioner experience.
           </p>
         </div>
       </section>
-      {/* Services Section */}
+
       <Services />
-
-  {/* About Section */}
-  <About />
-
-  {/* Newsletter Section - The Stack Digest */}
-  <section id="newsletter" className="py-12 bg-secondary/30">
-        <div className="container">
-          <div className="max-w-2xl mx-auto text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
-              The <span className="text-primary">Stack Index</span> Newsletter
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              Join 100+ engineers, founders, and maintainers like you. Get detailed signals of emerging tools, niche research, and resources on open-source culture, cloud computing, platform engineering, DevOps tools, opportunities, and more.
-            </p>
-          </div>
-
-          <div>
-            {/* Left: Past Issues */}
-            <div className="flex flex-col gap-4 h-full">
-              <h3 className="text-2xl font-semibold mb-4 text-foreground">Catch Up on Past Issues</h3>
-              <div className="grid lg:grid-cols-2 gap-8 items-stretch">
-              <div className="flex-1">
-                <SupascribeEmbed />
-              </div>
-              <div className="w-full h-full flex items-center">
-                <SubstackEmbed />
-              </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
+      <About />
+      <Newsletter />
       <Contact />
-
       <Footer />
     </div>
   );

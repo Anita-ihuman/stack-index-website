@@ -6,7 +6,7 @@ import { Search, Sparkles } from 'lucide-react';
 const EXAMPLE_QUERIES = [
   'best observability for Kubernetes',
   'free CI/CD for small teams',
-  'PostgreSQL vs MongoDB',
+  'lightweight service mesh',
   'message queue with low operational overhead',
   'IaC tool for multi-cloud',
 ];

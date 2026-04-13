@@ -1,16 +1,20 @@
+import { useRef, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Header } from '@/components/Header';
+import { Footer } from '@/components/Footer';
+import { SEO } from '@/components/SEO';
 import { ToolMetadataPanel } from '@/components/ToolMetadataPanel';
 import { ConfidenceBadge } from '@/components/ConfidenceBadge';
 import { ScoringTable } from '@/components/ScoringTable';
+import { AIAnalysisContainer } from '@/components/AIAnalysisContainer';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Skeleton } from '@/components/ui/skeleton';
 import { catalogApi } from '@/lib/apiClient';
-import { ChevronLeft, CheckCircle2, XCircle, Zap, ExternalLink } from 'lucide-react';
+import { ChevronLeft, CheckCircle2, XCircle, Zap, ExternalLink, BookOpen, GitCompare } from 'lucide-react';
 
 const CATEGORY_LABELS: Record<string, string> = {
   'container-orchestration': 'Container & Orchestration',
@@ -30,6 +34,10 @@ const CATEGORY_LABELS: Record<string, string> = {
 export default function ToolDetail() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
+  const aiSectionRef = useRef<HTMLDivElement>(null);
+
+  // AI Insights state — undefined = not yet triggered
+  const [aiInput, setAiInput] = useState<string | undefined>(undefined);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['tool', slug],
@@ -39,6 +47,14 @@ export default function ToolDetail() {
 
   const tool = data?.tool;
   const score = data?.score;
+
+  const triggerAI = (input: string) => {
+    setAiInput(input);
+    // Small delay so the component renders before we scroll to it
+    setTimeout(() => {
+      aiSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+  };
 
   if (isLoading) {
     return (
@@ -93,13 +109,13 @@ export default function ToolDetail() {
       }
     : null;
 
-  const handleCompareWithAlternative = (altSlug: string) => {
-    const input = `${tool.name} vs ${altSlug}`;
-    navigate(`/analyze?input=${encodeURIComponent(input)}`);
-  };
-
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title={`${tool.name} — DevOps Tool Overview`}
+        description={tool.description}
+        path={`/tools/${tool.slug}`}
+      />
       <Header />
 
       <main className="container py-10 space-y-6">
@@ -146,16 +162,14 @@ export default function ToolDetail() {
                 Documentation
               </a>
             </Button>
-            {tool.alternatives.length > 0 && (
-              <Button
-                size="sm"
-                onClick={() => handleCompareWithAlternative(tool.alternatives[0])}
-                className="bg-gradient-to-r from-primary to-primary/80"
-              >
-                <Zap className="w-4 h-4 mr-1.5" />
-                AI Compare with {tool.alternatives[0]}
-              </Button>
-            )}
+            <Button
+              size="sm"
+              onClick={() => triggerAI(tool.name)}
+              className="bg-gradient-to-r from-primary to-primary/80"
+            >
+              <Zap className="w-4 h-4 mr-1.5" />
+              AI Insights
+            </Button>
           </div>
         </div>
 
@@ -255,7 +269,6 @@ export default function ToolDetail() {
                   <h3 className="text-base font-semibold">Live Scoring</h3>
                   <ConfidenceBadge confidence={score.dataConfidence} />
                 </div>
-                {/* Overall bar */}
                 <div className="flex items-center gap-3">
                   <span className="text-xs text-muted-foreground w-24">Overall Score</span>
                   <Progress value={score.overall} className="h-2 flex-1" />
@@ -289,7 +302,7 @@ export default function ToolDetail() {
                           variant="ghost"
                           size="sm"
                           className="h-6 px-2 text-[10px]"
-                          onClick={() => handleCompareWithAlternative(alt)}
+                          onClick={() => triggerAI(`${tool.name} vs ${alt}`)}
                         >
                           compare
                         </Button>
@@ -299,6 +312,74 @@ export default function ToolDetail() {
                 </CardContent>
               </Card>
             )}
+
+            {/* ── AI Insights ─────────────────────────────────────────────── */}
+            <div ref={aiSectionRef} className="scroll-mt-24">
+              <div className="rounded-xl border border-primary/20 bg-card overflow-hidden">
+                {/* Section header */}
+                <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-primary/5">
+                  <div className="flex items-center gap-2">
+                    <Zap className="w-4 h-4 text-primary" />
+                    <span className="font-semibold text-sm">AI Insights</span>
+                    <span className="text-[10px] font-mono text-muted-foreground bg-muted px-2 py-0.5 rounded-full border">
+                      Powered by live docs
+                    </span>
+                  </div>
+                  {aiInput && (
+                    <button
+                      onClick={() => setAiInput(undefined)}
+                      className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      clear
+                    </button>
+                  )}
+                </div>
+
+                {/* Quick actions — always visible */}
+                <div className="px-6 py-4 flex flex-wrap gap-2 border-b border-border">
+                  <Button
+                    size="sm"
+                    variant={aiInput === tool.name ? 'default' : 'outline'}
+                    className="gap-1.5 text-xs"
+                    onClick={() => triggerAI(tool.name)}
+                  >
+                    <BookOpen className="w-3.5 h-3.5" />
+                    Deep-dive: {tool.name}
+                  </Button>
+                  {tool.alternatives.slice(0, 4).map((alt) => (
+                    <Button
+                      key={alt}
+                      size="sm"
+                      variant={aiInput === `${tool.name} vs ${alt}` ? 'default' : 'outline'}
+                      className="gap-1.5 text-xs"
+                      onClick={() => triggerAI(`${tool.name} vs ${alt}`)}
+                    >
+                      <GitCompare className="w-3.5 h-3.5" />
+                      vs {alt}
+                    </Button>
+                  ))}
+                </div>
+
+                {/* Analysis result — only rendered when triggered */}
+                {aiInput ? (
+                  <div className="px-6 py-6">
+                    <AIAnalysisContainer
+                      key={aiInput}
+                      initialInput={aiInput}
+                      compact
+                    />
+                  </div>
+                ) : (
+                  <div className="px-6 py-8 text-center">
+                    <p className="text-sm text-muted-foreground">
+                      Select an action above to get AI-powered insights from {tool.name}'s live documentation.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+            {/* ── /AI Insights ─────────────────────────────────────────────── */}
+
           </div>
 
           {/* Sidebar */}
@@ -307,6 +388,7 @@ export default function ToolDetail() {
           </aside>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }
