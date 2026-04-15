@@ -16,6 +16,7 @@ import Events from "./pages/Events";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Beta from "./pages/Beta";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import { Analytics } from "./components/Analytics";
 
@@ -42,6 +43,7 @@ const App = () => (
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/beta" element={<Beta />} />
+            <Route path="/contact" element={<Contact />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
