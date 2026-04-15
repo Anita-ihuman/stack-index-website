@@ -52,25 +52,6 @@ export const Footer = () => {
             </span>
           </div>
 
-          {/* Platform */}
-          <div>
-            <h3 className="font-semibold text-foreground mb-4 text-sm uppercase tracking-widest font-mono">
-              Platform
-            </h3>
-            <Link
-              to="/beta"
-              className="text-sm text-muted-foreground hover:text-accent transition-colors block mb-2"
-            >
-              Join the Beta
-            </Link>
-            <Link
-              to="/roadmap"
-              className="text-sm text-muted-foreground hover:text-accent transition-colors block"
-            >
-              DevRel Roadmap
-            </Link>
-          </div>
-
           {/* Learn */}
           <div>
             <h3 className="font-semibold text-foreground mb-4 text-sm uppercase tracking-widest font-mono">

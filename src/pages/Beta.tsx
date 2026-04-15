@@ -163,30 +163,6 @@ export default function Beta() {
           </div>
         </section>
 
-        {/* Bottom CTA */}
-        <section className="border-t border-border/60 bg-card/40">
-          <div className="container py-12 text-center space-y-4">
-            <h2 className="text-2xl font-bold font-mono">Ready to stop guessing?</h2>
-            <p className="text-muted-foreground text-sm">
-              Join the waitlist. Be first in line when we open the doors.
-            </p>
-            {status !== 'success' && (
-              <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto justify-center">
-                <Input
-                  type="email"
-                  placeholder="your@email.com"
-                  required
-                  value={form.email}
-                  onChange={(e) => setForm((s) => ({ ...s, email: e.target.value }))}
-                  className="flex-1"
-                />
-                <Button type="submit" disabled={status === 'loading'}>
-                  {status === 'loading' ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Get Early Access'}
-                </Button>
-              </form>
-            )}
-          </div>
-        </section>
       </main>
 
       <Footer />
