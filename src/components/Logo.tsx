@@ -1,5 +1,3 @@
-import logoImage from "@/assets/stack-index-logo.png";
-
 interface LogoProps {
   className?: string;
 }
@@ -7,10 +5,17 @@ interface LogoProps {
 export const Logo = ({ className = "" }: LogoProps) => {
   return (
     <div className={`flex items-center ${className}`}>
-      <img 
-        src={logoImage} 
-        alt="Stack Index Logo" 
-        className="h-10 w-auto"
+      {/* Light mode → black logo */}
+      <img
+        src="/stack-index-black.png"
+        alt="Stack Index"
+        className="h-10 w-auto block dark:hidden"
+      />
+      {/* Dark mode → white logo */}
+      <img
+        src="/stack-index-white.png"
+        alt="Stack Index"
+        className="h-10 w-auto hidden dark:block"
       />
     </div>
   );
