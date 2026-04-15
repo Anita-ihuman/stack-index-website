@@ -58,16 +58,16 @@ export const Footer = () => {
               Platform
             </h3>
             <Link
-              to="/tools"
+              to="/beta"
               className="text-sm text-muted-foreground hover:text-accent transition-colors block mb-2"
             >
-              Tools Catalog
+              Join the Beta
             </Link>
             <Link
-              to="/analyze"
+              to="/roadmap"
               className="text-sm text-muted-foreground hover:text-accent transition-colors block"
             >
-              AI Analyzer
+              DevRel Roadmap
             </Link>
           </div>
 

@@ -3,24 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
 import { Link, useNavigate } from "react-router-dom";
-import { ToolCommandPalette } from "./ToolCommandPalette";
-import { Search, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 export const Header = () => {
   const navigate = useNavigate();
-  const [paletteOpen, setPaletteOpen] = useState(false);
-
-  // ⌘K / Ctrl+K global shortcut
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        setPaletteOpen((v) => !v);
-      }
-    };
-    document.addEventListener('keydown', handler);
-    return () => document.removeEventListener('keydown', handler);
-  }, []);
 
   const goToSection = (id: string) => {
     const tryScroll = (attempt = 0) => {
@@ -79,26 +65,9 @@ export const Header = () => {
           >
             Blogs
           </Link>
-
-          <Link
-            to="/tools"
-            className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
-          >
-            Tools
-          </Link>
         </nav>
 
         <div className="flex items-center gap-4">
-          <button
-            onClick={() => setPaletteOpen(true)}
-            className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-md border border-border bg-muted/50 hover:bg-muted text-sm text-muted-foreground transition-colors font-mono"
-          >
-            <Search className="w-3.5 h-3.5" />
-            Search tools…
-            <kbd className="ml-1 text-[10px] bg-background border border-border rounded px-1.5 py-0.5">
-              ⌘K
-            </kbd>
-          </button>
           <ThemeToggle />
           <Link to="/beta">
             <Button className="bg-primary hover:bg-primary/90 text-primary-foreground transition-colors border border-primary/50 gap-2">
@@ -110,7 +79,6 @@ export const Header = () => {
       </div>
     </header>
 
-    <ToolCommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} />
-    </>
+</>
   );
 };

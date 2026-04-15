@@ -65,9 +65,9 @@ function AnimatedHero() {
 
           {/* CTAs */}
           <div className="flex flex-row gap-3 flex-wrap justify-center">
-            <Link to="/tools">
+            <Link to="/blog">
               <Button size="lg" className="gap-4" variant="outline">
-                Explore the Catalog <MoveRight className="w-4 h-4" />
+                Read the Blog <MoveRight className="w-4 h-4" />
               </Button>
             </Link>
             <Link to="/beta">

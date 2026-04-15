@@ -87,13 +87,13 @@ export default function Beta() {
                 <h2 className="text-xl font-semibold">You're on the list!</h2>
                 <p className="text-muted-foreground text-sm max-w-sm">
                   We'll email you the moment Stack Index opens to the public. In the meantime,
-                  explore the catalog and try the AI Analyzer.
+                  check out our blog for DevRel insights and tool deep-dives.
                 </p>
                 <a
-                  href="/tools"
+                  href="/blog"
                   className="inline-flex items-center gap-2 mt-2 text-sm font-medium text-primary hover:underline"
                 >
-                  Explore the tool catalog <ArrowRight className="w-3.5 h-3.5" />
+                  Read the blog <ArrowRight className="w-3.5 h-3.5" />
                 </a>
               </div>
             ) : (

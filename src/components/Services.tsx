@@ -10,7 +10,6 @@ const services: BentoItem[] = [
     icon: <Sparkles className="w-4 h-4 text-primary" />,
     status: "Live",
     tags: ["MCP", "Live Docs", "AI"],
-    cta: "Compare tools →",
     hasPersistentHover: true,
   },
   {
@@ -21,7 +20,6 @@ const services: BentoItem[] = [
     icon: <Users className="w-4 h-4 text-primary" />,
     status: "Active",
     tags: ["Community", "DX"],
-    cta: "Read reviews →",
   },
   {
     title: "ToolIndex",
@@ -29,9 +27,8 @@ const services: BentoItem[] = [
     description:
       "57+ DevOps and cloud tools scored across contributor velocity, documentation quality, community health, and more. Find the right tool, not just any tool.",
     icon: <LayoutGrid className="w-4 h-4 text-primary" />,
-    status: "57+ Tools",
+    status: "Coming Soon",
     tags: ["Scored", "Catalog"],
-    cta: "Browse catalog →",
   },
   {
     title: "Decision & Migration Guides",
@@ -39,9 +36,8 @@ const services: BentoItem[] = [
     description:
       "Workload-specific 'use X if Y' guidance and migration paths between tools. Because the goal isn't more research — it's a team aligned and shipping with confidence.",
     icon: <Map className="w-4 h-4 text-primary" />,
-    status: "Beta",
+    status: "Coming Soon",
     tags: ["Migration", "Guidance", "Workloads"],
-    cta: "View guides →",
   },
 ];
 
