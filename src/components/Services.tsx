@@ -1,30 +1,47 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { GitCompare, MessageSquare, Search, ArrowRightLeft } from "lucide-react";
+import { Sparkles, Users, LayoutGrid, Map } from "lucide-react";
+import { BentoGrid, type BentoItem } from "@/components/ui/bento-grid";
 
-const services = [
+const services: BentoItem[] = [
   {
-    icon: GitCompare,
     title: "AI Tool Comparisons",
+    meta: "Powered by Claude",
     description:
       "Side-by-side comparisons grounded in live documentation via MCP — not vendor blogs, not stale training data. Clear tradeoffs that close the trust gap between discovery and decision.",
+    icon: <Sparkles className="w-4 h-4 text-primary" />,
+    status: "Live",
+    tags: ["MCP", "Live Docs", "AI"],
+    cta: "Compare tools →",
+    hasPersistentHover: true,
   },
   {
-    icon: MessageSquare,
     title: "Community DX Reviews",
+    meta: "Real operators",
     description:
-      "Insights from engineers who've shipped with these tools in production. The kind of context great DevRel surfaces — the real experience no feature matrix will ever capture.",
+      "Insights from engineers who've shipped with these tools in production. The real experience no feature matrix will ever capture.",
+    icon: <Users className="w-4 h-4 text-primary" />,
+    status: "Active",
+    tags: ["Community", "DX"],
+    cta: "Read reviews →",
   },
   {
-    icon: Search,
     title: "ToolIndex",
+    meta: "8 dimensions",
     description:
-      "57+ DevOps and cloud tools scored across 8 real dimensions — contributor velocity, documentation quality, community health, and more. Find the right tool, not just any tool.",
+      "57+ DevOps and cloud tools scored across contributor velocity, documentation quality, community health, and more. Find the right tool, not just any tool.",
+    icon: <LayoutGrid className="w-4 h-4 text-primary" />,
+    status: "57+ Tools",
+    tags: ["Scored", "Catalog"],
+    cta: "Browse catalog →",
   },
   {
-    icon: ArrowRightLeft,
     title: "Decision & Migration Guides",
+    meta: "Use-case driven",
     description:
       "Workload-specific 'use X if Y' guidance and migration paths between tools. Because the goal isn't more research — it's a team aligned and shipping with confidence.",
+    icon: <Map className="w-4 h-4 text-primary" />,
+    status: "Beta",
+    tags: ["Migration", "Guidance", "Workloads"],
+    cta: "View guides →",
   },
 ];
 
@@ -32,36 +49,18 @@ export const Services = () => {
   return (
     <section id="services" className="py-24 bg-secondary/20 border-b border-primary/20">
       <div className="container">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <h2 className="text-4xl font-bold mb-4 text-foreground">
             The Intelligence Layer Between{" "}
             <span className="text-primary">Discovery and Adoption</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Stack Index does what great DevRel does — bridges the gap between finding a tool
-            and confidently committing to it. Powered by verified docs, live signals, and
-            community wisdom.
+            and confidently committing to it.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {services.map((service, index) => (
-            <Card
-              key={index}
-              className="bg-card border-border hover:border-primary/60 transition-colors"
-            >
-              <CardHeader>
-                <div className="w-12 h-12 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center mb-4">
-                  <service.icon className="w-6 h-6 text-primary" />
-                </div>
-                <CardTitle className="text-xl text-foreground">{service.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">{service.description}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <BentoGrid items={services} cols={2} />
       </div>
     </section>
   );

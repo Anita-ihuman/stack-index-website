@@ -4,7 +4,7 @@ import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
 import { Link, useNavigate } from "react-router-dom";
 import { ToolCommandPalette } from "./ToolCommandPalette";
-import { Search } from "lucide-react";
+import { Search, Sparkles } from "lucide-react";
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -100,12 +100,12 @@ export const Header = () => {
             </kbd>
           </button>
           <ThemeToggle />
-          <Button
-            onClick={scrollToContact}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground transition-colors border border-primary/50"
-          >
-            Contact Us
-          </Button>
+          <Link to="/beta">
+            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground transition-colors border border-primary/50 gap-2">
+              <Sparkles className="w-3.5 h-3.5" />
+              Join Beta
+            </Button>
+          </Link>
         </div>
       </div>
     </header>

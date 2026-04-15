@@ -1,47 +1,70 @@
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { AnimatedHero } from "@/components/ui/animated-hero";
+
+const FLOATING_TAGS = [
+  { label: "Kubernetes",     top: "12%",  left: "6%",   delay: "0s"    },
+  { label: "Terraform",      top: "22%",  right: "7%",  delay: "0.4s"  },
+  { label: "Prometheus",     top: "58%",  left: "4%",   delay: "0.8s"  },
+  { label: "ArgoCD",         top: "72%",  right: "5%",  delay: "0.2s"  },
+  { label: "Istio",          top: "40%",  left: "2%",   delay: "1.1s"  },
+  { label: "GitHub Actions", top: "82%",  left: "10%",  delay: "0.6s"  },
+  { label: "Datadog",        top: "15%",  right: "18%", delay: "1.3s"  },
+  { label: "Helm",           top: "68%",  right: "14%", delay: "0.9s"  },
+  { label: "Vault",          top: "48%",  right: "3%",  delay: "0.3s"  },
+  { label: "Pulumi",         top: "30%",  left: "14%",  delay: "1.5s"  },
+];
 
 export const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-background border-b border-primary/20 overflow-hidden">
-      <div className="relative z-10 max-w-5xl mx-auto px-6 py-24 text-center">
+    <section className="relative min-h-[92vh] flex flex-col items-center justify-center overflow-hidden bg-background border-b border-primary/20">
 
-        <span className="inline-block font-mono text-xs tracking-widest uppercase text-accent border border-accent/40 bg-accent/10 px-3 py-1.5 rounded mb-8">
-          AI-Native · DevOps Tooling · Developer Intelligence
-        </span>
+      {/* Grid background */}
+      <div
+        className="absolute inset-0 opacity-[0.035]"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, hsl(var(--primary)) 1px, transparent 1px),
+            linear-gradient(to bottom, hsl(var(--primary)) 1px, transparent 1px)
+          `,
+          backgroundSize: "60px 60px",
+        }}
+      />
 
-        <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight text-foreground">
-          From{" "}
-          <span className="text-accent">Discovery</span>
-          <br />
-          to Confident{" "}
-          <span className="text-primary">Adoption</span>
-        </h1>
+      {/* Glow orbs */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-1/4 w-[300px] h-[300px] rounded-full bg-accent/5 blur-[100px] pointer-events-none" />
+      <div className="absolute top-0 right-1/4 w-[250px] h-[250px] rounded-full bg-primary/8 blur-[90px] pointer-events-none" />
 
-        <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
-          Stack Index is the AI-native platform where developers discover, compare, and
-          confidently choose DevOps tools — through verified documentation and community wisdom,
-          turning weeks of research into minutes of clarity.
-        </p>
-
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Button
-            size="lg"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground transition-colors group px-8 py-6 text-lg"
+      {/* Floating tool badges — hidden on mobile */}
+      <div className="absolute inset-0 pointer-events-none hidden lg:block">
+        {FLOATING_TAGS.map((tag) => (
+          <span
+            key={tag.label}
+            className="absolute font-mono text-[11px] px-2.5 py-1 rounded-full border border-primary/20 bg-card/60 text-muted-foreground backdrop-blur-sm"
+            style={{
+              top: tag.top,
+              left: (tag as any).left,
+              right: (tag as any).right,
+              animation: `float 6s ease-in-out infinite`,
+              animationDelay: tag.delay,
+            }}
           >
-            Compare Tools
-            <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-          </Button>
-
-          <Button
-            size="lg"
-            variant="outline"
-            className="border-primary/40 text-primary hover:bg-primary hover:text-primary-foreground transition-colors px-8 py-6 text-lg"
-          >
-            Read the Blog
-          </Button>
-        </div>
+            {tag.label}
+          </span>
+        ))}
       </div>
+
+      {/* Animated hero content */}
+      <div className="relative z-10 w-full">
+        <AnimatedHero />
+      </div>
+
+      {/* Float keyframes */}
+      <style>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50%       { transform: translateY(-10px); }
+        }
+      `}</style>
     </section>
   );
 };

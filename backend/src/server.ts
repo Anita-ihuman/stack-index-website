@@ -113,6 +113,30 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 /**
+ * Keep-alive ping — prevents Render free tier from sleeping.
+ * Pings own health endpoint every 10 minutes in production.
+ */
+const startKeepAlive = () => {
+  if (env.NODE_ENV !== 'production') return;
+  const RENDER_URL = process.env.RENDER_EXTERNAL_URL;
+  if (!RENDER_URL) return;
+
+  const pingUrl = `${RENDER_URL}/api/health`;
+  const INTERVAL_MS = 10 * 60 * 1000; // 10 minutes
+
+  setInterval(async () => {
+    try {
+      const res = await fetch(pingUrl);
+      console.log(`[KeepAlive] Pinged ${pingUrl} → ${res.status}`);
+    } catch (err: any) {
+      console.warn(`[KeepAlive] Ping failed: ${err.message}`);
+    }
+  }, INTERVAL_MS);
+
+  console.log(`[KeepAlive] Started — pinging every 10 min`);
+};
+
+/**
  * Server startup
  */
 const startServer = async () => {
@@ -127,6 +151,7 @@ const startServer = async () => {
       console.log(`[Server] Environment: ${env.NODE_ENV}`);
       console.log(`[Server] Frontend URL: ${env.FRONTEND_URL}`);
       console.log(`[Server] Health check: http://localhost:${PORT}/api/health`);
+      startKeepAlive();
     });
   } catch (error) {
     console.error('[Server] Failed to start:', error);

@@ -101,6 +101,12 @@ export const Footer = () => {
             <h3 className="font-semibold text-foreground mb-4 text-sm uppercase tracking-widest font-mono">
               Community
             </h3>
+            <Link
+              to="/beta"
+              className="text-sm text-muted-foreground hover:text-accent transition-colors block mb-2"
+            >
+              Join the Beta
+            </Link>
             <a
               href="/#newsletter"
               onClick={goToNewsletter}
@@ -164,10 +170,18 @@ export const Footer = () => {
           <span className="text-xs font-mono text-muted-foreground">
             Built by a developer advocate, for the community that builds infrastructure.
           </span>
-          <div className="flex gap-2 items-center">
-            <span className="inline-block w-2 h-2 rounded-full bg-primary" />
-            <span className="inline-block w-2 h-2 rounded-full bg-accent" />
-            <span className="inline-block w-2 h-2 rounded-full" style={{ backgroundColor: "#534AB7" }} />
+          <div className="flex items-center gap-4">
+            <Link to="/privacy" className="text-xs text-muted-foreground hover:text-primary transition-colors">
+              Privacy Policy
+            </Link>
+            <Link to="/terms" className="text-xs text-muted-foreground hover:text-primary transition-colors">
+              Terms of Service
+            </Link>
+            <div className="flex gap-2 items-center">
+              <span className="inline-block w-2 h-2 rounded-full bg-primary" />
+              <span className="inline-block w-2 h-2 rounded-full bg-accent" />
+              <span className="inline-block w-2 h-2 rounded-full" style={{ backgroundColor: "#534AB7" }} />
+            </div>
           </div>
         </div>
       </div>

@@ -14,7 +14,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const SITE_URL = 'https://www.stackindex.io';
+const SITE_URL = 'https://stackindex.io';
 const postsDir = path.join(__dirname, '../src/content/posts');
 const outputDir = path.join(__dirname, '../public/blog');
 
@@ -29,20 +29,23 @@ const postFiles = fs.readdirSync(postsDir).filter(f => f.endsWith('.md'));
 console.log(`[OG Generator] Found ${postFiles.length} posts. Generating OG pages...`);
 
 postFiles.forEach(file => {
-  const slug = file.replace('.md', '');
+  const filenameSlug = file.replace('.md', '');
   const filePath = path.join(postsDir, file);
   const raw = fs.readFileSync(filePath, 'utf8');
   const { data } = matter(raw);
 
+  // Use frontmatter slug if present — must match the React Router slug
+  const slug = data.slug ? String(data.slug).trim().toLowerCase() : filenameSlug;
+
   const title = data.title || 'Stack Index';
   const desc = data.description || data.excerpt || '';
   const thumbnail = data.thumbnail || '/og-image.png';
-  
+
   // Ensure thumbnail is an absolute URL
   const image = thumbnail.startsWith('http')
     ? thumbnail
     : `${SITE_URL}${thumbnail}`;
-  
+
   const url = `${SITE_URL}/blog/${slug}`;
 
   // Generate HTML with OG meta tags
@@ -80,6 +83,36 @@ postFiles.forEach(file => {
 });
 
 console.log(`[OG Generator] Done! Generated ${postFiles.length} OG pages in ${outputDir}`);
+
+// ── IndexNow ping ──────────────────────────────────────────────────────────
+// Notifies Bing, Yandex, and other IndexNow-compatible engines of new/updated URLs.
+// Only runs in CI/production (skip locally to avoid noise).
+if (process.env.CI || process.env.INDEXNOW_PING) {
+  const INDEXNOW_KEY = 'df8eb9ef42ee4dc184b1d93c3d98a397';
+  const urlList = postFiles.map(file => {
+    const raw = fs.readFileSync(path.join(postsDir, file), 'utf8');
+    const { data } = matter(raw);
+    const slug = data.slug
+      ? String(data.slug).trim().toLowerCase()
+      : file.replace('.md', '');
+    return `${SITE_URL}/blog/${slug}`;
+  });
+
+  const body = JSON.stringify({
+    host: 'stackindex.io',
+    key: INDEXNOW_KEY,
+    keyLocation: `${SITE_URL}/${INDEXNOW_KEY}.txt`,
+    urlList,
+  });
+
+  fetch('https://api.indexnow.org/indexnow', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json; charset=utf-8' },
+    body,
+  })
+    .then(res => console.log(`[IndexNow] Pinged ${urlList.length} URLs → HTTP ${res.status}`))
+    .catch(err => console.warn(`[IndexNow] Ping failed: ${err.message}`));
+}
 
 // Helper to escape HTML entities
 function escapeHtml(text) {
