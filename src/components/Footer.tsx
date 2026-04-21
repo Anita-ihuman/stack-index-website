@@ -91,10 +91,16 @@ export const Footer = () => {
             <a
               href="/#newsletter"
               onClick={goToNewsletter}
-              className="text-sm text-muted-foreground hover:text-accent transition-colors block"
+              className="text-sm text-muted-foreground hover:text-accent transition-colors block mb-2"
             >
               Newsletter
             </a>
+            <Link
+              to="/contact"
+              className="text-sm text-muted-foreground hover:text-accent transition-colors block"
+            >
+              Contact Us
+            </Link>
           </div>
 
           {/* Connect */}

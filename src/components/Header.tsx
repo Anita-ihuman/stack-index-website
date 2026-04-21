@@ -65,6 +65,12 @@ export const Header = () => {
           >
             Blogs
           </Link>
+          <Link
+            to="/contact"
+            className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+          >
+            Contact Us
+          </Link>
         </nav>
 
         <div className="flex items-center gap-4">
