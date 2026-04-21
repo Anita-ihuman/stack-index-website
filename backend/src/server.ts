@@ -26,7 +26,13 @@ app.use(
   cors({
     origin: isDevelopment()
       ? true
-      : [env.FRONTEND_URL, 'http://localhost:5173', 'http://localhost:8080'],
+      : [
+          env.FRONTEND_URL,
+          'https://stackindex.io',
+          'https://www.stackindex.io',
+          'http://localhost:5173',
+          'http://localhost:8080',
+        ],
     credentials: true,
     methods: ['GET', 'POST', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],

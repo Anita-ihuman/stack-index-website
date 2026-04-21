@@ -28,7 +28,7 @@ const About = () => {
               The DevOps tooling landscape is one of the most fragmented spaces in tech. Teams waste
               days reading scattered vendor blogs, outdated Reddit threads, and biased comparisons —
               and still end up uncertain. Stack Index solves that by combining AI that reads live
-              documentation via MCP with community reviews from practitioners who've actually shipped
+              documentation with community reviews from practitioners who've actually shipped
               with these tools — giving you verified answers instead of educated guesses.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">

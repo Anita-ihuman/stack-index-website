@@ -5,7 +5,7 @@ import { newsletterApi } from "@/lib/apiClient";
 import { CheckCircle2, ArrowRight, Zap, BarChart2, BookOpen, Users } from "lucide-react";
 
 const highlights = [
-  { icon: BarChart2, text: "Weekly tool comparisons grounded in live docs" },
+  { icon: BarChart2, text: "Weekly tool comparisons grounded in verified sources" },
   { icon: Zap,       text: "What's moving in DevOps and cloud tooling" },
   { icon: BookOpen,  text: "Practitioner stories and platform diaries" },
   { icon: Users,     text: "Built for engineers who make infrastructure decisions" },

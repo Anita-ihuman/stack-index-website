@@ -17,7 +17,7 @@ export const About = () => {
             {
               num: "01",
               title: "Live-Verified Intelligence",
-              body: "Our AI reads current documentation via MCP, not cached training snapshots. Answers reflect what tools actually do today — not what a vendor wrote 18 months ago.",
+              body: "Our AI reads current, verified documentation — not cached training snapshots. Answers reflect what tools actually do today — not what a vendor wrote 18 months ago.",
             },
             {
               num: "02",

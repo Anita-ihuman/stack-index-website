@@ -6,7 +6,7 @@ const pillars = [
     icon: ShieldCheck,
     title: "Verified, Not Assumed",
     description:
-      "Our AI reads live documentation via MCP — not stale training data. Every insight is grounded in what tools actually do today, eliminating the hallucinations that break trust in AI-generated advice.",
+      "Every insight is grounded in what tools actually do today — not stale training data or vendor-written summaries. We verify against current sources so you can trust what you're reading.",
   },
   {
     icon: Users,

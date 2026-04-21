@@ -21,8 +21,8 @@ const FEATURES = [
   },
   {
     icon: Sparkles,
-    title: 'Live Doc Intelligence',
-    description: 'The AI Analyzer reads live documentation and surfaces insights, tradeoffs, and comparisons you can actually trust.',
+    title: 'AI-Verified Intelligence',
+    description: 'The AI Analyzer surfaces insights, tradeoffs, and comparisons grounded in verified, up-to-date sources — not vendor marketing.',
   },
   {
     icon: BookOpen,
@@ -77,7 +77,7 @@ export default function Beta() {
 
             <p className="text-lg text-muted-foreground leading-relaxed">
               Stack Index bridges the gap between discovering a tool and confidently adopting it —
-              with AI-powered analysis, live documentation insights, and scored comparisons across
+              with AI-powered analysis, verified tool insights, and scored comparisons across
               the tools that run modern infrastructure.
             </p>
 

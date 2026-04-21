@@ -11,8 +11,8 @@ const envSchema = z.object({
   FRONTEND_URL: z.string().default('http://localhost:8080'),
   SITE_URL: z.string().default('https://www.stackindex.io'),
 
-  // Required API keys
-  ANTHROPIC_API_KEY: z.string().min(1, 'ANTHROPIC_API_KEY is required'),
+  // API keys — optional so server starts even when AI features are not yet configured
+  ANTHROPIC_API_KEY: z.string().optional(),
   GITHUB_TOKEN: z.string().optional(),
 
   // Optional API keys
