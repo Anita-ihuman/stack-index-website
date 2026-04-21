@@ -1,4 +1,3 @@
-import nodemailer from 'nodemailer';
 import { env } from '../config/environment';
 
 type ContactPayload = {
@@ -9,46 +8,47 @@ type ContactPayload = {
 };
 
 /**
- * Send an email using nodemailer. SMTP credentials must be provided via env vars.
- * If SMTP is not configured this will throw an error and callers should handle it.
+ * Send a contact form notification via Brevo transactional email API.
+ * Falls back to logging if BREVO_API_KEY is not set (e.g. local dev).
  */
 export const sendContactEmail = async (payload: ContactPayload) => {
-  const recipient = env.CONTACT_RECIPIENT;
-
-  if (!env.SMTP_HOST || !env.SMTP_PORT) {
-    throw new Error('SMTP not configured. Set SMTP_HOST and SMTP_PORT in backend .env');
-  }
-
-  const port = Number(env.SMTP_PORT);
-
-  const transporter = nodemailer.createTransport({
-    host: env.SMTP_HOST,
-    port,
-    secure: port === 465,
-    requireTLS: port === 587,
-    auth: env.SMTP_USER && env.SMTP_PASS ? { user: env.SMTP_USER, pass: env.SMTP_PASS } : undefined,
-    tls: { rejectUnauthorized: false },
-  });
-
-  // Verify connection before attempting to send
-  await transporter.verify();
-
-  const subject = `New contact form submission from ${payload.firstName} ${payload.lastName ?? ''}`.trim();
+  const recipient = env.CONTACT_RECIPIENT || 'thestackindex@gmail.com';
+  const name = `${payload.firstName} ${payload.lastName ?? ''}`.trim();
+  const subject = `New contact form submission from ${name}`;
 
   const html = `
-    <p><strong>Name:</strong> ${payload.firstName} ${payload.lastName ?? ''}</p>
+    <p><strong>Name:</strong> ${name}</p>
     <p><strong>Email:</strong> ${payload.email}</p>
     <p><strong>Message:</strong></p>
-    <div>${payload.message.replace(/\n/g, '<br/>')}</div>
+    <div style="white-space:pre-wrap">${payload.message.replace(/\n/g, '<br/>')}</div>
   `;
 
-  const info = await transporter.sendMail({
-    from: env.SMTP_USER || `no-reply@${env.FRONTEND_URL?.replace(/^https?:\/\//, '')}`,
-    to: recipient,
-    subject,
-    html,
-    text: `${subject}\n\n${payload.message}`,
+  if (!env.BREVO_API_KEY) {
+    // Dev fallback — log to console so local testing still works
+    console.log('[Contact] No BREVO_API_KEY — logging message instead of sending email');
+    console.log({ to: recipient, subject, from: payload.email, message: payload.message });
+    return { ok: true, dev: true };
+  }
+
+  const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
+    headers: {
+      'api-key': env.BREVO_API_KEY,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      sender: { name: 'Stack Index', email: 'thestackindex@gmail.com' },
+      to: [{ email: recipient }],
+      replyTo: { email: payload.email, name },
+      subject,
+      htmlContent: html,
+    }),
   });
 
-  return info;
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Brevo API error ${res.status}: ${body}`);
+  }
+
+  return { ok: true };
 };
