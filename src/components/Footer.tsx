@@ -102,7 +102,7 @@ export const Footer = () => {
             <h3 className="font-semibold text-foreground mb-4 text-sm uppercase tracking-widest font-mono">
               Connect
             </h3>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-4 mb-6">
               <a
                 href="https://twitter.com/TheStackIndex"
                 target="_blank" rel="noopener noreferrer"
@@ -143,28 +143,18 @@ export const Footer = () => {
                 <Mail className="h-5 w-5" />
               </a>
             </div>
+            <Link to="/privacy" className="text-xs text-muted-foreground hover:text-accent transition-colors block mb-2">
+              Privacy Policy
+            </Link>
+            <Link to="/terms" className="text-xs text-muted-foreground hover:text-accent transition-colors block mb-2">
+              Terms of Service
+            </Link>
+            <Link to="/license" className="text-xs text-muted-foreground hover:text-accent transition-colors block">
+              License
+            </Link>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="border-t border-border/60 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span className="text-xs font-mono text-muted-foreground">
-            Built by a developer advocate, for the community that builds infrastructure.
-          </span>
-          <div className="flex items-center gap-4">
-            <Link to="/privacy" className="text-xs text-muted-foreground hover:text-primary transition-colors">
-              Privacy Policy
-            </Link>
-            <Link to="/terms" className="text-xs text-muted-foreground hover:text-primary transition-colors">
-              Terms of Service
-            </Link>
-            <div className="flex gap-2 items-center">
-              <span className="inline-block w-2 h-2 rounded-full bg-primary" />
-              <span className="inline-block w-2 h-2 rounded-full bg-accent" />
-              <span className="inline-block w-2 h-2 rounded-full" style={{ backgroundColor: "#534AB7" }} />
-            </div>
-          </div>
-        </div>
       </div>
     </footer>
   );

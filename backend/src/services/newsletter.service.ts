@@ -5,6 +5,14 @@ import { BrevoClient } from '@getbrevo/brevo';
 
 const DATA_PATH = path.join(__dirname, '../../data/subscribers.json');
 
+// Ensure the data directory and file exist on first run (e.g. fresh Render deploy)
+const ensureDataFile = () => {
+  const dir = path.dirname(DATA_PATH);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  if (!fs.existsSync(DATA_PATH)) fs.writeFileSync(DATA_PATH, JSON.stringify({ subscribers: [] }, null, 2), 'utf-8');
+};
+ensureDataFile();
+
 type Subscriber = {
   id: string;
   email: string;

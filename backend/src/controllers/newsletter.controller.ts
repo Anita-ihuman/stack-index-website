@@ -2,10 +2,10 @@ import { Request, Response } from 'express';
 import { addSubscriber, syncAllToBrevo } from '../services/newsletter.service';
 
 export const subscribe = async (req: Request, res: Response) => {
-  const { email, firstName } = req.body;
+  const { email, firstName = '' } = req.body;
 
-  if (!email || !firstName) {
-    return res.status(400).json({ error: 'email and firstName are required' });
+  if (!email) {
+    return res.status(400).json({ error: 'email is required' });
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

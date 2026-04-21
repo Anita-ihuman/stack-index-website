@@ -6,7 +6,7 @@ const services: BentoItem[] = [
     title: "AI Tool Comparisons",
     meta: "Powered by Claude",
     description:
-      "Side-by-side comparisons grounded in live documentation via MCP — not vendor blogs, not stale training data. Clear tradeoffs that close the trust gap between discovery and decision.",
+      "Side-by-side comparisons grounded in documentation, blogs, developers insights. Clear tradeoffs that close the trust gap between discovery and decision.",
     icon: <Sparkles className="w-4 h-4 text-primary" />,
     status: "Live",
     tags: ["MCP", "Live Docs", "AI"],

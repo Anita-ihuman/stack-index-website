@@ -12,7 +12,7 @@ const highlights = [
 ];
 
 export const Newsletter = () => {
-  const [form, setForm] = useState({ firstName: "", email: "" });
+  const [form, setForm] = useState({ firstName: "", email: "" }); // firstName holds full name
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -96,11 +96,11 @@ export const Newsletter = () => {
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                      First name
+                      Full name
                     </label>
                     <Input
                       type="text"
-                      placeholder="Anita"
+                      placeholder="Anita Ihuman"
                       value={form.firstName}
                       onChange={(e) => setForm((f) => ({ ...f, firstName: e.target.value }))}
                       required

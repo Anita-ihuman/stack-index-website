@@ -100,10 +100,10 @@ export default function Beta() {
               <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
                 <Input
                   type="text"
-                  placeholder="First name"
+                  placeholder="Full name"
                   value={form.firstName}
                   onChange={(e) => setForm((s) => ({ ...s, firstName: e.target.value }))}
-                  className="sm:w-36 shrink-0"
+                  className="sm:w-40 shrink-0"
                 />
                 <Input
                   type="email"
