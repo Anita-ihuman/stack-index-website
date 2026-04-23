@@ -14,7 +14,7 @@ type Post = {
   content: string;
 };
 
-const eagerModules = import.meta.glob('/src/content/posts/*.md', { as: 'raw', eager: true }) as Record<string, string>;
+const eagerModules = import.meta.glob('/src/content/posts/*.md', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
 
 const parseFrontmatter = (raw: string) => {
   const fmMatch = raw.match(/^---\s*([\s\S]*?)\s*---\s*/);
